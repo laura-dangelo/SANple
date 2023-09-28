@@ -17,7 +17,7 @@ You can install the development version of SANple from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("Fradenti/SAN_sanple_package_wip")
+devtools::install_github("laura-dangelo/SANple")
 ```
 
 ## Example
