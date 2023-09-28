@@ -1,0 +1,9 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^README\.Rmd$
+^\.github$
+^cran-comments\.md$
+^\.travis\.yml$
+^CRAN-SUBMISSION$
+^codecov\.yml$
