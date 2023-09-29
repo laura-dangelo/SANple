@@ -5,7 +5,6 @@
 #' @param ... ignored.
 #' 
 #' @export
-#' @useDynLib SANple
 print.SANclusters = function(x, ...)
 {
 

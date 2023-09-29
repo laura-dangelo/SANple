@@ -27,7 +27,6 @@
 #' @importFrom RColorBrewer brewer.pal
 #' @importFrom stats ecdf
 #' @export
-#' @useDynLib SANple
 plot.SANmcmc <- function(x,
                          type = c("boxplot", "ecdf", "scatter"),
                          estimated_clusters = NULL,

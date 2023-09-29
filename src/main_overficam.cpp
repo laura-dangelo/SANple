@@ -1,3 +1,4 @@
+#include <RcppArmadillo.h>
 #include "funs_overcam.h"
 #include "funs_cam.h"
 #include "funs_fcam.h"

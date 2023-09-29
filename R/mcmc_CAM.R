@@ -143,10 +143,6 @@
 #' @export sample_CAM
 #'
 #' @importFrom stats cor var dist hclust cutree rgamma 
-#' 
-#' @import Rcpp
-#' @import RcppArmadillo
-#' @useDynLib SANple
 sample_CAM = function(nrep, y, group, 
                       maxK = 50, 
                       maxL = 50, 

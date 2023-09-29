@@ -1,4 +1,4 @@
-
+#include <RcppArmadillo.h>
 #include "funs_cam.h"
 // [[Rcpp::depends(RcppProgress)]]
 #include <progress.hpp>

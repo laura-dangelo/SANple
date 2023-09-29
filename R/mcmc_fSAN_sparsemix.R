@@ -135,10 +135,7 @@
 #' Model-based clustering based on sparse finite Gaussian mixtures. Statistics and Computing 26, 303–324. DOI: 10.1007/s11222-014-9500-2
 #'
 #' @export sample_fSAN_sparsemix
-#' @import Rcpp
-#' @import RcppArmadillo
 #' @importFrom stats cor var dist hclust cutree rgamma 
-#' @useDynLib SANple
 sample_fSAN_sparsemix = function(nrep, y, group, 
                           maxK = 50, maxL = 50, 
                           m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,

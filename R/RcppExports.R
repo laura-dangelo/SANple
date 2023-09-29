@@ -2,22 +2,22 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 sample_cam_arma <- function(nrep, y, group, maxK, maxL, m0, tau0, lambda0, gamma0, fixed_alpha, fixed_beta, alpha, beta, hyp_alpha1, hyp_alpha2, hyp_beta1, hyp_beta2, mu_start, sigma2_start, M_start, S_start, alpha_start, beta_start, progressbar) {
-    .Call('_SANple_sample_cam_arma', PACKAGE = 'SANple', nrep, y, group, maxK, maxL, m0, tau0, lambda0, gamma0, fixed_alpha, fixed_beta, alpha, beta, hyp_alpha1, hyp_alpha2, hyp_beta1, hyp_beta2, mu_start, sigma2_start, M_start, S_start, alpha_start, beta_start, progressbar)
+    .Call(`_SANple_sample_cam_arma`, nrep, y, group, maxK, maxL, m0, tau0, lambda0, gamma0, fixed_alpha, fixed_beta, alpha, beta, hyp_alpha1, hyp_alpha2, hyp_beta1, hyp_beta2, mu_start, sigma2_start, M_start, S_start, alpha_start, beta_start, progressbar)
 }
 
 sample_fcam_arma <- function(nrep, y, group, maxK, maxL, m0, tau0, lambda0, gamma0, fixed_alpha, fixed_beta, alpha, beta, hyp_alpha1, hyp_alpha2, hyp_beta1, hyp_beta2, mu_start, sigma2_start, M_start, S_start, alpha_start, beta_start, eps_alpha, eps_beta, progressbar) {
-    .Call('_SANple_sample_fcam_arma', PACKAGE = 'SANple', nrep, y, group, maxK, maxL, m0, tau0, lambda0, gamma0, fixed_alpha, fixed_beta, alpha, beta, hyp_alpha1, hyp_alpha2, hyp_beta1, hyp_beta2, mu_start, sigma2_start, M_start, S_start, alpha_start, beta_start, eps_alpha, eps_beta, progressbar)
+    .Call(`_SANple_sample_fcam_arma`, nrep, y, group, maxK, maxL, m0, tau0, lambda0, gamma0, fixed_alpha, fixed_beta, alpha, beta, hyp_alpha1, hyp_alpha2, hyp_beta1, hyp_beta2, mu_start, sigma2_start, M_start, S_start, alpha_start, beta_start, eps_alpha, eps_beta, progressbar)
 }
 
 sample_ficam_arma <- function(nrep, y, group, maxK, maxL, m0, tau0, lambda0, gamma0, fixed_alpha, fixed_beta, alpha, beta, hyp_alpha1, hyp_alpha2, hyp_beta1, hyp_beta2, mu_start, sigma2_start, M_start, S_start, alpha_start, beta_start, eps_beta, progressbar) {
-    .Call('_SANple_sample_ficam_arma', PACKAGE = 'SANple', nrep, y, group, maxK, maxL, m0, tau0, lambda0, gamma0, fixed_alpha, fixed_beta, alpha, beta, hyp_alpha1, hyp_alpha2, hyp_beta1, hyp_beta2, mu_start, sigma2_start, M_start, S_start, alpha_start, beta_start, eps_beta, progressbar)
+    .Call(`_SANple_sample_ficam_arma`, nrep, y, group, maxK, maxL, m0, tau0, lambda0, gamma0, fixed_alpha, fixed_beta, alpha, beta, hyp_alpha1, hyp_alpha2, hyp_beta1, hyp_beta2, mu_start, sigma2_start, M_start, S_start, alpha_start, beta_start, eps_beta, progressbar)
 }
 
 sample_overcam_arma <- function(nrep, y, group, maxK, maxL, m0, tau0, lambda0, gamma0, fixed_alpha, fixed_beta, alpha, beta, hyp_alpha, hyp_beta, mu_start, sigma2_start, M_start, S_start, alpha_start, beta_start, eps_alpha, eps_beta, progressbar) {
-    .Call('_SANple_sample_overcam_arma', PACKAGE = 'SANple', nrep, y, group, maxK, maxL, m0, tau0, lambda0, gamma0, fixed_alpha, fixed_beta, alpha, beta, hyp_alpha, hyp_beta, mu_start, sigma2_start, M_start, S_start, alpha_start, beta_start, eps_alpha, eps_beta, progressbar)
+    .Call(`_SANple_sample_overcam_arma`, nrep, y, group, maxK, maxL, m0, tau0, lambda0, gamma0, fixed_alpha, fixed_beta, alpha, beta, hyp_alpha, hyp_beta, mu_start, sigma2_start, M_start, S_start, alpha_start, beta_start, eps_alpha, eps_beta, progressbar)
 }
 
 sample_overficam_arma <- function(nrep, y, group, maxK, maxL, m0, tau0, lambda0, gamma0, fixed_alpha, fixed_beta, alpha, beta, hyp_alpha1, hyp_alpha2, hyp_beta, mu_start, sigma2_start, M_start, S_start, alpha_start, beta_start, eps_beta, progressbar) {
-    .Call('_SANple_sample_overficam_arma', PACKAGE = 'SANple', nrep, y, group, maxK, maxL, m0, tau0, lambda0, gamma0, fixed_alpha, fixed_beta, alpha, beta, hyp_alpha1, hyp_alpha2, hyp_beta, mu_start, sigma2_start, M_start, S_start, alpha_start, beta_start, eps_beta, progressbar)
+    .Call(`_SANple_sample_overficam_arma`, nrep, y, group, maxK, maxL, m0, tau0, lambda0, gamma0, fixed_alpha, fixed_beta, alpha, beta, hyp_alpha1, hyp_alpha2, hyp_beta, mu_start, sigma2_start, M_start, S_start, alpha_start, beta_start, eps_beta, progressbar)
 }
 

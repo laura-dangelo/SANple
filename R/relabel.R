@@ -1,7 +1,6 @@
 #' Relabel clusters 
 #' @keywords internal
 #' @param ix vector of cluster labels
-#' @useDynLib SANple
 .relabell = function(ix) 
 {
   if(min(ix)==0) ix = ix+1

@@ -143,10 +143,7 @@
 #' Sethuraman, A.J. (1994). A Constructive Definition of Dirichlet Priors, \emph{Statistica Sinica}, 4, 639–650.
 #'
 #' @export sample_fiSAN
-#' @import Rcpp
-#' @import RcppArmadillo
 #' @importFrom stats cor var dist hclust cutree rgamma 
-#' @useDynLib SANple
 sample_fiSAN = function(nrep, y, group, 
                        maxK = 50, maxL = 50, 
                        m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,

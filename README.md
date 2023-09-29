@@ -36,7 +36,7 @@ You can install the development version of SANple from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("Fradenti/SAN_sanple_package_wip")
+devtools::install_github("laura-dangelo/SANple)
 ```
 
 ## Example
@@ -67,7 +67,7 @@ out
 #> Model estimated on 240 total observations and 2 groups 
 #> Total MCMC iterations: 3000 
 #> maxL: 50 - maxK: 50 
-#> Elapsed time: 1.161 secs
+#> Elapsed time: 1.142 secs
 ```
 
 …

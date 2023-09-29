@@ -142,10 +142,7 @@
 #' Generalized mixtures of finite mixtures and telescoping sampling. \emph{Bayesian Analysis}, 16(4), 1279–1307. DOI: 10.1214/21-BA1294
 #'
 #' @export sample_fSAN
-#' @import Rcpp
-#' @import RcppArmadillo
 #' @importFrom stats cor var dist hclust cutree rgamma 
-#' @useDynLib SANple
 sample_fSAN = function(nrep, y, group, 
                        maxK = 50, maxL = 50, 
                        m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
