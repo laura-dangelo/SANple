@@ -124,6 +124,7 @@
 #' }
 #'
 #' @examples 
+#' \dontrun{
 #' set.seed(123)
 #' y <- c(rnorm(170),rnorm(70,5))
 #' g <- c(rep(1,100), rep(2, 140))
@@ -131,7 +132,7 @@
 #' lines(density(y[g==2]), col = 2)
 #' out <- sample_fiSAN_sparsemix(nrep = 3000, y = y, group = g, beta = 0.01)
 #' out 
-#' 
+#' }
 #' 
 #' @references Kalli, M., Griffin, J.E., and Walker, S.G. (2011). Slice Sampling Mixture Models, 
 #' \emph{Statistics and Computing}, 21, 93–105. DOI: 10.1007/s11222-009-9150-y
