@@ -1,4 +1,3 @@
-
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # SANple v0.0.1 <img src="man/figures/sanple_draft.png" align="right" width="120" />
