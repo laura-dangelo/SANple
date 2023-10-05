@@ -55,4 +55,8 @@ D’Angelo, L., Canale, A., Yu, Z., Guindani, M. (2023). Bayesian nonparametric 
 
 D’Angelo, L., and Denti, F. (2023+). A finite-infinite shared atoms nested model for the Bayesian analysis of large grouped data sets. *Working paper* 0--23.
 
+<<<<<<< HEAD
 Denti, F., Camerlenghi, F., Guindani, M., Mira, A., 2023. A Common Atoms Model for the Bayesian Nonparametric Analysis of Nested Data. *Journal of the American Statistical Association*. 118(541), 405--416. \doi{10.1080/01621459.2021.1933499}.
+=======
+Denti, F., Camerlenghi, F., Guindani, M., Mira, A., 2023. A Common Atoms Model for the Bayesian Nonparametric Analysis of Nested Data. *Journal of the American Statistical Association*. 118(541), 405--416. \doi{10.1080/01621459.2021.1933499}.
+>>>>>>> cd14be43b84a642597e8a43a4205332f77670985
