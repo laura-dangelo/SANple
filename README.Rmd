@@ -33,7 +33,7 @@ You can install the development version of SANple from [GitHub](https://github.c
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("laura-dangelo/SANple)
+devtools::install_github("laura-dangelo/SANple")
 ```
 
 ## Example
@@ -45,12 +45,13 @@ library(SANple)
 
 ## basic example code
 set.seed(123)
-y <- c(rnorm(170),rnorm(70,5))
-g <- c(rep(1,100), rep(2, 140))
-plot(density(y[g==1]), xlim = c(-5,10))
-lines(density(y[g==2]), col = 2)
+y <- c(rnorm(50,-5,1), rnorm(170,0,1),rnorm(70,5,1))
+g <- c(rep(1,150), rep(2, 140))
+plot(density(y[g==1]), xlim = c(-10,10), main = "", xlab = "")
+lines(density(y[g==2]), col = "cyan4")
 out <- sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1)
 out 
+plot(out)
 ```
 
 ...
