@@ -1,3 +1,4 @@
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # SANple v0.0.1 <img src="man/figures/sanple_draft.png" align="right" width="120" />
@@ -15,6 +16,19 @@ models use Gaussian mixtures with a normal-inverse-gamma prior
 distribution on the parameters. Additional functions are provided to
 help analyzing the results of the fitting procedure.
 
+D’Angelo, L., Canale, A., Yu, Z., Guindani, M. (2023). Bayesian
+nonparametric analysis for the detection of spikes in noisy calcium
+imaging data. *Biometrics* 79(2), 1370–1382. <doi:10.1111/biom.13626>.
+
+D’Angelo, L., and Denti, F. (2023+). A finite-infinite shared atoms
+nested model for the Bayesian analysis of large grouped data sets.
+*Working paper* 0–23.
+
+Denti, F., Camerlenghi, F., Guindani, M., Mira, A., 2023. A Common Atoms
+Model for the Bayesian Nonparametric Analysis of Nested Data. *Journal
+of the American Statistical Association*. 118(541), 405–416.
+<doi:10.1080/01621459.2021.1933499>.
+
 ## Installation
 
 You can install the development version of SANple from
@@ -22,7 +36,7 @@ You can install the development version of SANple from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("laura-dangelo/SANple)
+devtools::install_github("laura-dangelo/SANple")
 ```
 
 ## Example
@@ -36,38 +50,30 @@ library(SANple)
 
 ## basic example code
 set.seed(123)
-y <- c(rnorm(170),rnorm(70,5))
-g <- c(rep(1,100), rep(2, 140))
-plot(density(y[g==1]), xlim = c(-5,10))
-lines(density(y[g==2]), col = 2)
+y <- c(rnorm(50,-5,1), rnorm(170,0,1),rnorm(70,5,1))
+g <- c(rep(1,150), rep(2, 140))
+plot(density(y[g==1]), xlim = c(-10,10), main = "", xlab = "")
+lines(density(y[g==2]), col = "cyan4")
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
 
 ``` r
 out <- sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1)
+#> Warning in sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1): Increase maxL:
+#> all the provided observational mixture components were used. Check '$warnings'
+#> to see when it happened.
 out 
 #> 
 #> MCMC result of fiSAN model 
 #> -----------------------------------------------
-#> Model estimated on 240 total observations and 2 groups 
+#> Model estimated on 290 total observations and 2 groups 
 #> Total MCMC iterations: 3000 
 #> maxL: 50 - maxK: 50 
-#> Elapsed time: 1.435 secs
+#> Elapsed time: 1.359 secs
+plot(out)
 ```
 
+<img src="man/figures/README-example-2.png" width="100%" />
+
 …
-
-# References
-
-D’Angelo, L., Canale, A., Yu, Z., Guindani, M. (2023). Bayesian
-nonparametric analysis for the detection of spikes in noisy calcium
-imaging data. *Biometrics* 79(2), 1370–1382. .
-
-D’Angelo, L., and Denti, F. (2023+). A finite-infinite shared atoms
-nested model for the Bayesian analysis of large grouped data sets.
-*Working paper* 0–23.
-
-Denti, F., Camerlenghi, F., Guindani, M., Mira, A., 2023. A Common Atoms
-Model for the Bayesian Nonparametric Analysis of Nested Data. *Journal
-of the American Statistical Association*. 118(541), 405–416. .
