@@ -16,6 +16,8 @@ models use Gaussian mixtures with a normal-inverse-gamma prior
 distribution on the parameters. Additional functions are provided to
 help analyzing the results of the fitting procedure.
 
+### References
+
 D’Angelo, L., Canale, A., Yu, Z., Guindani, M. (2023). Bayesian
 nonparametric analysis for the detection of spikes in noisy calcium
 imaging data. *Biometrics* 79(2), 1370–1382. <doi:10.1111/biom.13626>.
@@ -24,9 +26,9 @@ D’Angelo, L., and Denti, F. (2023+). A finite-infinite shared atoms
 nested model for the Bayesian analysis of large grouped data sets.
 *Working paper* 0–23.
 
-Denti, F., Camerlenghi, F., Guindani, M., Mira, A., 2023. A Common Atoms
-Model for the Bayesian Nonparametric Analysis of Nested Data. *Journal
-of the American Statistical Association*. 118(541), 405–416.
+Denti, F., Camerlenghi, F., Guindani, M., Mira, A., (2023). A Common
+Atoms Model for the Bayesian Nonparametric Analysis of Nested Data.
+*Journal of the American Statistical Association*. 118(541), 405–416.
 <doi:10.1080/01621459.2021.1933499>.
 
 ## Installation
@@ -70,10 +72,29 @@ out
 #> Model estimated on 290 total observations and 2 groups 
 #> Total MCMC iterations: 3000 
 #> maxL: 50 - maxK: 50 
-#> Elapsed time: 1.359 secs
-plot(out)
+#> Elapsed time: 1.342 secs
+clusters <- estimate_clusters(out, burnin = 2000)
+clusters
+#> 
+#> Summary of the estimated observational and distributional clusters 
+#> 
+#> ----------------------------------
+#> Estimated number of observational clusters: 3 
+#> Estimated number of distributional clusters: 2 
+#> ----------------------------------
+#> 
+#> Distributional cluster 1 
+#>     post_mean  post_var
+#> 1 -4.96559645 0.8572352
+#> 2 -0.05374608 0.9306906
+#> 
+#> Distributional cluster 2 
+#>     post_mean  post_var
+#> 2 -0.00160923 0.7737203
+#> 3  5.03452815 0.8314760
+plot(out, estimated_clusters = clusters)
 ```
 
-<img src="man/figures/README-example-2.png" width="100%" />
+<img src="man/figures/README-example-2.png" width="80%" />
 
 …
