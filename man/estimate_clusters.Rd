@@ -29,13 +29,14 @@ Object of class \code{SANclusters}. The object contains:
 Given the MCMC output, estimate the observational and distributional partitions using \code{\link[salso:salso]{salso::salso()}}.
 }
 \examples{
+\donttest{
 set.seed(123)
 y <- c(rnorm(170),rnorm(70,5))
 g <- c(rep(1,100), rep(2, 140))
 out <- sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1)
 estcl <- estimate_clusters(out)
 estcl
-
+}
 
 }
 \seealso{

@@ -125,6 +125,7 @@
 #'
 #'
 #' @examples 
+#' \donttest{
 #' set.seed(123)
 #' y <- c(rnorm(170),rnorm(70,5))
 #' g <- c(rep(1,100), rep(2, 140))
@@ -133,7 +134,7 @@
 #' out <- sample_fSAN(nrep = 3000, y = y, group = g, 
 #'                    alpha = 1, beta = 1)
 #' out 
-#'
+#' }
 #' 
 #' @references D’Angelo, L., Canale, A., Yu, Z., and Guindani, M. (2023). 
 #' Bayesian nonparametric analysis for the detection of spikes in noisy calcium imaging data. \emph{Biometrics}, 79(2), 1370–1382. DOI: 10.1111/biom.13626

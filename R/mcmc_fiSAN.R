@@ -125,6 +125,7 @@
 #' }
 #'
 #' @examples 
+#' \donttest{
 #' set.seed(123)
 #' y <- c(rnorm(170),rnorm(70,5))
 #' g <- c(rep(1,100), rep(2, 140))
@@ -132,6 +133,7 @@
 #' lines(density(y[g==2]), col = 2)
 #' out <- sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1)
 #' out 
+#' }
 #' 
 #' @references 
 #' Frühwirth-Schnatter, S., Malsiner-Walli, G. and Grün, B. (2021).

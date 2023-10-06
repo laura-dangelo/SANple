@@ -4,6 +4,8 @@
 #' @param x object of class \code{SANclusters} (the result of a call to \code{\link{estimate_clusters}})
 #' @param ... ignored.
 #' 
+#' @return The function prints a summary of the estimated clusters.
+#' 
 #' @export
 print.SANclusters <- function(x, ...)
 {

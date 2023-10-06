@@ -12,6 +12,9 @@
 
 \item{...}{ignored.}
 }
+\value{
+The function prints a summary of the fitted model.
+}
 \description{
 Print method for objects of class \code{SANmcmc}.
 }

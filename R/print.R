@@ -6,6 +6,8 @@
 #' \code{\link{sample_fSAN}}, \code{\link{sample_fSAN_sparsemix}}, or \code{\link{sample_CAM}}).
 #' @param ... ignored.
 #'
+#' @return The function prints a summary of the fitted model.
+#' 
 #' @seealso \code{\link{estimate_clusters}}, \code{\link{plot.SANmcmc}}
 #' 
 #' @export

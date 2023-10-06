@@ -122,6 +122,7 @@
 #' 
 #' 
 #' @examples 
+#' \donttest{
 #' set.seed(123)
 #' y <- c(rnorm(170),rnorm(70,5))
 #' g <- c(rep(1,100), rep(2, 140))
@@ -130,7 +131,7 @@
 #' out <- sample_CAM(nrep = 3000, y = y, group = g,
 #'                   maxL = 50, maxK = 50)
 #' out 
-#'
+#' }
 #' 
 #' @references Denti, F., Camerlenghi, F., Guindani, M., and Mira, A. (2023). A Common Atoms Model for the Bayesian Nonparametric Analysis of Nested Data. 
 #' \emph{Journal of the American Statistical Association}, 118(541), 405-416. DOI: 10.1080/01621459.2021.1933499

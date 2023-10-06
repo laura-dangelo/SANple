@@ -141,6 +141,7 @@ The distribution of the probabilities is \eqn{(\omega_{1,k},\dots,\omega_{L,k})\
 Moreover, the dimension \eqn{L} is random (see Frühwirth-Schnatter et al., 2021).
 }
 \examples{
+\donttest{
 set.seed(123)
 y <- c(rnorm(170),rnorm(70,5))
 g <- c(rep(1,100), rep(2, 140))
@@ -148,6 +149,7 @@ plot(density(y[g==1]), xlim = c(-5,10))
 lines(density(y[g==2]), col = 2)
 out <- sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1)
 out 
+}
 
 }
 \references{

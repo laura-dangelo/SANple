@@ -21,12 +21,16 @@
 #' 
 #' @note The function is not available for the observational weights \eqn{\omega}.
 #' 
+#' @return The function displays the traceplots of the MCMC algorithm.
+#' 
 #' @examples 
+#' \donttest{
 #' set.seed(123)
 #' y <- c(rnorm(170),rnorm(70,5))
 #' g <- c(rep(1,100), rep(2, 140))
 #' out <- sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1)
 #' traceplot(out, params = c("mu", "sigma2"), trunc_plot = 2)
+#' }
 #' 
 #' @importFrom graphics par
 #' @importFrom grDevices devAskNewPage

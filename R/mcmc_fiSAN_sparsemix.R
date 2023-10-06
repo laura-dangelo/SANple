@@ -124,7 +124,7 @@
 #' }
 #'
 #' @examples 
-#' \dontrun{
+#' \donttest{
 #' set.seed(123)
 #' y <- c(rnorm(170),rnorm(70,5))
 #' g <- c(rep(1,100), rep(2, 140))

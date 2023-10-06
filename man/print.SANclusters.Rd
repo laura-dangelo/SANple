@@ -11,6 +11,9 @@
 
 \item{...}{ignored.}
 }
+\value{
+The function prints a summary of the estimated clusters.
+}
 \description{
 Print the cluster-specific sample means and variances of the estimated observational and distributional partition.
 }

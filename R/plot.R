@@ -13,13 +13,18 @@
 #' @param ncores if the partition is computed, the number of CPU cores to use to estimate the clusters, i.e., the number of simultaneous runs at any given time. A value of zero indicates to use all cores on the system.
 #' @param ... additional graphical parameters to be passed when \code{type = "scatter"} is used.
 #'
+#' @return The function plots a summary of the fitted model.
+#'
 #' @seealso \code{\link{print.SANmcmc}}, \code{\link{estimate_clusters}}
 #'
-#' @examples set.seed(123)
+#' @examples 
+#' \donttest{
+#' set.seed(123)
 #' y <- c(rnorm(170),rnorm(70,5))
 #' g <- c(rep(1,100), rep(2, 140))
 #' out <- sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1)
 #' plot(out, type = "ecdf", palette_brewed = TRUE)
+#' }
 #'
 #' @importFrom graphics abline lines points boxplot par
 #' @importFrom grDevices colorRampPalette

@@ -138,6 +138,7 @@ The clustering of observations (observational clustering) is provided by the all
 The distribution of the probabilities is \eqn{ \{\omega_{l,k}\}_{l=1}^{\infty} \sim GEM(\beta)} for all \eqn{k = 1,2,\dots}
 }
 \examples{
+\donttest{
 set.seed(123)
 y <- c(rnorm(170),rnorm(70,5))
 g <- c(rep(1,100), rep(2, 140))
@@ -146,7 +147,7 @@ lines(density(y[g==2]), col = 2)
 out <- sample_CAM(nrep = 3000, y = y, group = g,
                   maxL = 50, maxK = 50)
 out 
-
+}
 
 }
 \references{

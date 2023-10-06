@@ -139,6 +139,7 @@ The distribution of the probabilities is \eqn{(\omega_{1,k},\dots,\omega_{L,k})\
 Moreover, the dimension \eqn{L} is random (see Frühwirth-Schnatter et al., 2021).
 }
 \examples{
+\donttest{
 set.seed(123)
 y <- c(rnorm(170),rnorm(70,5))
 g <- c(rep(1,100), rep(2, 140))
@@ -147,7 +148,7 @@ lines(density(y[g==2]), col = 2)
 out <- sample_fSAN(nrep = 3000, y = y, group = g, 
                    alpha = 1, beta = 1)
 out 
-
+}
 
 }
 \references{

@@ -27,6 +27,9 @@ traceplot(object, params,
 
 \item{trunc_plot}{integer (default = 10). For multidimensional parameters, the maximum number of components to be plotted.}
 }
+\value{
+The function displays the traceplots of the MCMC algorithm.
+}
 \description{
 Check the convergence of the MCMC through visual inspection of the chains.
 }
@@ -34,10 +37,12 @@ Check the convergence of the MCMC through visual inspection of the chains.
 The function is not available for the observational weights \eqn{\omega}.
 }
 \examples{
+\donttest{
 set.seed(123)
 y <- c(rnorm(170),rnorm(70,5))
 g <- c(rep(1,100), rep(2, 140))
 out <- sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1)
 traceplot(out, params = c("mu", "sigma2"), trunc_plot = 2)
+}
 
 }

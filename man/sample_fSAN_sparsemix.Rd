@@ -134,7 +134,7 @@ The clustering of observations (observational clustering) is provided by the all
 The distribution of the probabilities is \eqn{(\omega_{1,k},\dots,\omega_{L,k})\sim Dirichlet_L(\beta,\dots,\beta)} for all \eqn{k = 1,\dots,K}.
 }
 \examples{
-\dontrun{
+\donttest{
 set.seed(123)
 y <- c(rnorm(170),rnorm(70,5))
 g <- c(rep(1,100), rep(2, 140))
