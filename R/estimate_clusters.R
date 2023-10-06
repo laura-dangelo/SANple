@@ -27,36 +27,36 @@
 #' @export
 #' @importFrom salso salso
 #' @useDynLib SANple
-estimate_clusters = function(object, burnin = NULL, ncores = 0)
+estimate_clusters <- function(object, burnin = NULL, ncores = 0)
 {
   
-  if(is.null(burnin)) { burnin = 1:round(object$params$nrep/3*2) }
-  estimated_oc =  suppressWarnings(salso::salso(object$sim$obs_cluster[-burnin,], nCores = ncores)) 
-  estimated_dc =  suppressWarnings(salso::salso(object$sim$distr_cluster[-burnin,], nCores = ncores))
+  if(is.null(burnin)) { burnin <- 1:round(object$params$nrep/3*2) }
+  estimated_oc <- suppressWarnings(salso::salso(object$sim$obs_cluster[-burnin,], nCores = ncores)) 
+  estimated_dc <- suppressWarnings(salso::salso(object$sim$distr_cluster[-burnin,], nCores = ncores))
   
-  n_oc = length(unique(estimated_oc))
-  n_dc = length(unique(estimated_dc))
+  n_oc <- length(unique(estimated_oc))
+  n_dc <- length(unique(estimated_dc))
   
-  means = matrix(NA, n_oc, n_dc)
-  vars = matrix(NA, n_oc, n_dc)
+  means <- matrix(NA, n_oc, n_dc)
+  vars <- matrix(NA, n_oc, n_dc)
   
-  dc_long = estimated_dc[object$params$group]
+  dc_long <- estimated_dc[object$params$group]
   
   for(j in 1:n_dc) {
     
-    suby = object$params$y[dc_long == j]
-    subcl = estimated_oc[dc_long == j]
+    suby <- object$params$y[dc_long == j]
+    subcl <- estimated_oc[dc_long == j]
     
     for(k in unique(subcl)) {
-      means[k,j] = mean(suby[(subcl == k)]) 
+      means[k,j] <- mean(suby[(subcl == k)]) 
       if(length(suby[subcl == k])>1) {
-        vars[k,j] = var(suby[subcl == k]) }
+        vars[k,j] <- var(suby[subcl == k]) }
     }
   }
   
 
   
-  out = (list("est_oc" = estimated_oc,
+  out <- (list("est_oc" = estimated_oc,
               "est_dc" = estimated_dc,
               "clus_means" = means,
               "clus_vars" = vars))
