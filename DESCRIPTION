@@ -1,7 +1,7 @@
 Package: SANple
 Type: Package
 Title: Fitting Common and Shared Atoms Nested Models via MCMC
-Version: 0.0.1
+Version: 0.1.0
 Date: 2023-09-09
 Authors@R: c(
     person("Laura", "D'Angelo", ,"laura.dangelo@live.com", 

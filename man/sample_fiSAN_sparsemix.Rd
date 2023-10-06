@@ -139,6 +139,7 @@ The clustering of observations (observational clustering) is provided by the all
 The distribution of the probabilities is \eqn{(\omega_{1,k},\dots,\omega_{L,k})\sim Dirichlet_L(\beta,\dots,\beta)} for all \eqn{k = 1,2,\dots}.
 }
 \examples{
+\dontrun{
 set.seed(123)
 y <- c(rnorm(170),rnorm(70,5))
 g <- c(rep(1,100), rep(2, 140))
@@ -146,7 +147,7 @@ plot(density(y[g==1]), xlim = c(-5,10))
 lines(density(y[g==2]), col = 2)
 out <- sample_fiSAN_sparsemix(nrep = 3000, y = y, group = g, beta = 0.01)
 out 
-
+}
 
 }
 \references{

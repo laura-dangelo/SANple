@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# SANple v0.0.1 <img src="man/figures/sanple_draft.png" align="right" width="120" />
+# SANple v0.1.0 <img src="man/figures/sanple_draft.png" align="right" width="120" />
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/laura-dangelo/SANple/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/laura-dangelo/SANple/actions/workflows/R-CMD-check.yaml)
