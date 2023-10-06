@@ -62,9 +62,9 @@ lines(density(y[g==2]), col = "cyan4")
 
 ``` r
 out <- sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1)
-#> Warning in sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1): Increase maxL:
-#> all the provided observational mixture components were used. Check '$warnings'
-#> to see when it happened.
+#> Warning in sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1): Increase
+#> maxL: all the provided observational mixture components were used. Check
+#> '$warnings' to see when it happened.
 out 
 #> 
 #> MCMC result of fiSAN model 
@@ -72,7 +72,7 @@ out
 #> Model estimated on 290 total observations and 2 groups 
 #> Total MCMC iterations: 3000 
 #> maxL: 50 - maxK: 50 
-#> Elapsed time: 1.342 secs
+#> Elapsed time: 1.583 secs
 clusters <- estimate_clusters(out, burnin = 2000)
 clusters
 #> 
@@ -95,6 +95,6 @@ clusters
 plot(out, estimated_clusters = clusters)
 ```
 
-<img src="man/figures/README-example-2.png" width="80%" />
+<img src="man/figures/README-example-2.png" width="100%" />
 
 …

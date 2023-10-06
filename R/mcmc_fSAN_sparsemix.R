@@ -136,7 +136,7 @@
 #'
 #' @export sample_fSAN_sparsemix
 #' @importFrom stats cor var dist hclust cutree rgamma 
-sample_fSAN_sparsemix = function(nrep, y, group, 
+sample_fSAN_sparsemix <- function(nrep, y, group, 
                           maxK = 50, maxL = 50, 
                           m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
                           hyp_alpha = 10, hyp_beta = 10, 
@@ -149,12 +149,12 @@ sample_fSAN_sparsemix = function(nrep, y, group,
                           progress = TRUE,
                           seed = NULL)
 {
-  group = .relabell(group) - 1 
+  group <- .relabell(group) - 1 
   
-  if(is.null(seed)){seed = round(stats::runif(1,1,10000))}
+  if(is.null(seed)){seed <- round(stats::runif(1,1,10000))}
   set.seed(seed)
   
-  params = list(nrep = nrep, 
+  params <- list(nrep = nrep, 
                 y = y,
                 group = group+1, 
                 maxK = maxK, 
@@ -163,84 +163,84 @@ sample_fSAN_sparsemix = function(nrep, y, group,
                 lambda0 = lambda0, gamma0 = gamma0,
                 seed = seed)
   
-  if(!is.null(alpha)) { params$alpha = alpha }
-  if(!is.null(beta)) { params$beta = beta }
-  if(is.null(alpha)) { params$hyp_alpha = hyp_alpha }
-  if(is.null(beta)) { params$hyp_beta = hyp_beta }
+  if(!is.null(alpha)) { params$alpha <- alpha }
+  if(!is.null(beta)) { params$beta <- beta }
+  if(is.null(alpha)) { params$hyp_alpha <- hyp_alpha }
+  if(is.null(beta)) { params$hyp_beta <- hyp_beta }
   
-  if(is.null(S_start)) { S_start = rep(0,length(unique(group))) }
+  if(is.null(S_start)) { S_start <- rep(0,length(unique(group))) }
   
   # if the initial cluster allocation is passed
   if(!is.null(M_start)) { 
-    warmstart = FALSE
-    M_start = .relabell(M_start)
+    warmstart <- FALSE
+    M_start <- .relabell(M_start)
     
     # and the mean is passed or the variance is passed don't do anything
     
     # if the mean is not passed
     if(is.null(mu_start)) { 
-      mu_start = rep(0,maxL)
-      ncl0 = length(unique(M_start))
+      mu_start <- rep(0,maxL)
+      ncl0 <- length(unique(M_start))
       for(l in unique(M_start)) {
-        mu_start[l] = mean(y[M_start == l])
+        mu_start[l] <- mean(y[M_start == l])
       }
     }
     # if the variance is not passed
     if(is.null(sigma2_start)) { 
-      sigma2_start = rep(0.001,maxL)
-      ncl0 = length(unique(M_start))
+      sigma2_start <- rep(0.001,maxL)
+      ncl0 <- length(unique(M_start))
       for(l in unique(M_start)) {
-        sigma2_start[l] = var(y[M_start == l])
+        sigma2_start[l] <- var(y[M_start == l])
       }
     }
   } else {
     # if the initial cluster allocation is not passed
     # and you don't want a warmstart
     if(!warmstart){
-      M_start = rep(1, length(y))#sample(0:(maxL-2), length(y), replace = TRUE)
-      mu_start = rep(0, maxL)
-      mu_start[1] = mean(y)
-      sigma2_start = rep(0.001, maxL)
-      sigma2_start[1] = var(y)/2
+      M_start <- rep(1, length(y))#sample(0:(maxL-2), length(y), replace = TRUE)
+      mu_start <- rep(0, maxL)
+      mu_start[1] <- mean(y)
+      sigma2_start <- rep(0.001, maxL)
+      sigma2_start[1] <- var(y)/2
     }
     
     # if the initial cluster allocation is not passed
     # and you want a warmstart
     if(warmstart){
-      mu_start = rep(0,maxL)
-      sigma2_start = rep(0.001,maxL)
+      mu_start <- rep(0,maxL)
+      sigma2_start <- rep(0.001,maxL)
       
-      if(is.null(nclus_start)) { nclus_start = min(c(maxL, 30))}
-      M_start = stats::kmeans(y,
+      if(is.null(nclus_start)) { nclus_start <- min(c(maxL, 30))}
+      M_start <- stats::kmeans(y,
                               centers = nclus_start, 
                               algorithm="MacQueen",
                               iter.max = 50)$cluster 
       
-      nclus_start = length(unique(M_start))
-      mu_start[1:nclus_start] = sapply(1:nclus_start, function(x) mean(y[M_start == x])) 
-      sigma2_start[1:nclus_start] = sapply(1:nclus_start, function(x) var(y[M_start == x])) 
-      sigma2_start[1:nclus_start][sigma2_start[1:nclus_start]==0] = 0.001
-      sigma2_start[is.na(sigma2_start)] = 0.001
+      nclus_start <- length(unique(M_start))
+      mu_start[1:nclus_start] <- sapply(1:nclus_start, function(x) mean(y[M_start == x])) 
+      sigma2_start[1:nclus_start] <- sapply(1:nclus_start, function(x) var(y[M_start == x])) 
+      sigma2_start[1:nclus_start][sigma2_start[1:nclus_start]==0] <- 0.001
+      sigma2_start[is.na(sigma2_start)] <- 0.001
     }
   }
-  M_start = M_start-1
-  sigma2_start[is.na(sigma2_start)] = 0.001
+  M_start <- M_start-1
+  sigma2_start[is.na(sigma2_start)] <- 0.001
   
-  if(is.null(alpha_start)) { alpha_start = rgamma(1, hyp_alpha, hyp_alpha*maxK) }
-  if(is.null(beta_start)) { beta_start = rgamma(1, hyp_beta, hyp_beta*maxL) }
+  if(is.null(alpha_start)) { alpha_start <- rgamma(1, hyp_alpha, hyp_alpha*maxK) }
+  if(is.null(beta_start)) { beta_start <- rgamma(1, hyp_beta, hyp_beta*maxL) }
   
-  fixed_alpha = F
-  fixed_beta = F
+  fixed_alpha <- F
+  fixed_beta <- F
   if(!is.null(alpha) ) {
-    fixed_alpha = T ; eps_alpha = 1 } else { alpha = 1 }
+    fixed_alpha <- T ; eps_alpha <- 1 } else { alpha <- 1 }
   if(!is.null(beta) ) {
-    fixed_beta = T ; eps_beta = 1 } else { beta = 1 }
+    fixed_beta <- T ; eps_beta <- 1 } else { beta <- 1 }
   
   if((fixed_alpha == F)&(is.null(eps_alpha))) {stop("Missing eps parameter for MH step on alpha. Please provide 'eps_alpha' or a fixed 'alpha' value.")}
   if((fixed_beta == F)&(is.null(eps_beta))) {stop("Missing eps parameter for MH step on beta Please provide 'eps_beta' or a fixed 'beta' value.")}
   
-  start = Sys.time()
-  out = sample_overcam_arma(nrep, y, group, 
+  start <- Sys.time()
+  out <- sample_overcam_arma(nrep, y, group, 
                             maxK, maxL, 
                             m0, tau0, 
                             lambda0, gamma0,
@@ -252,12 +252,12 @@ sample_fSAN_sparsemix = function(nrep, y, group,
                             alpha_start, beta_start,
                             eps_alpha, eps_beta,
                             progress)
-  end = Sys.time()
+  end <- Sys.time()
   
-  out$distr_cluster = (out$distr_cluster + 1)
-  out$obs_cluster = (out$obs_cluster + 1)
+  out$distr_cluster <- (out$distr_cluster + 1)
+  out$obs_cluster <- (out$obs_cluster + 1)
   
-  output = list( "model" = "fSAN_sparsemix",
+  output <- list( "model" = "fSAN_sparsemix",
                  "params" = params,
                  "sim" = out,
                  "time" = end - start)

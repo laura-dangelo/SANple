@@ -33,32 +33,33 @@ plot.SANmcmc <- function(x,
                          burnin = NULL,
                          palette_brewed = FALSE, ncores = 0, ...) 
 {
-  type = match.arg(type)
+  type <- match.arg(type)
   
   if(!is.null(estimated_clusters)) { 
-    burnin = 1:(x$params$nrep - nrow(attr(estimated_clusters$est_oc, "draws")))
-    estimated_oc = estimated_clusters$est_oc
-    estimated_dc = estimated_clusters$est_dc
+    burnin <- 1:(x$params$nrep - nrow(attr(estimated_clusters$est_oc, "draws")))
+    estimated_oc <- estimated_clusters$est_oc
+    estimated_dc <- estimated_clusters$est_dc
   } else {
-    if(is.null(burnin)) { burnin = 1:round(x$params$nrep/3*2) } else { burnin = 1:burnin }
+    if(is.null(burnin)) { burnin <- 1:round(x$params$nrep/3*2) 
+    } else { burnin <- 1:burnin }
   }
   
   if(is.null(estimated_clusters)) { 
-    estimated_oc =  suppressWarnings(salso::salso(x$sim$obs_cluster[-burnin,], nCores = ncores)) 
-    estimated_dc =  suppressWarnings(salso::salso(x$sim$distr_cluster[-burnin,], nCores = ncores)) 
+    estimated_oc <- suppressWarnings(salso::salso(x$sim$obs_cluster[-burnin,], nCores = ncores)) 
+    estimated_dc <- suppressWarnings(salso::salso(x$sim$distr_cluster[-burnin,], nCores = ncores)) 
   }
   
-  posterior_means = tapply(x$params$y, estimated_oc, mean)
+  posterior_means <- tapply(x$params$y, estimated_oc, mean)
   
   
   max_CD <- max(estimated_dc)
   max_OC <- max(estimated_oc)
   if(palette_brewed){
     colpal <- rev(grDevices::colorRampPalette(RColorBrewer::brewer.pal(11, "Spectral"))(max_CD))
-    colpal2 = rev(grDevices::colorRampPalette(RColorBrewer::brewer.pal(11, "Spectral"))(max_OC))
+    colpal2 <- rev(grDevices::colorRampPalette(RColorBrewer::brewer.pal(11, "Spectral"))(max_OC))
   }else{
     colpal <- 1:max_CD
-    colpal2 = 1:max_OC
+    colpal2 <- 1:max_OC
   }
   
   oldpar <- par()$mfrow
@@ -66,12 +67,12 @@ plot.SANmcmc <- function(x,
   
   if(type == "ecdf") {  
     
-    ecdfs = list()
-    DCs = c()
+    ecdfs <- list()
+    DCs <- c()
     for(j in 1:length(unique(x$params$group))) {
-      idj = unique(x$params$group)[j]
-      ecdfs[[j]] = ecdf(x$params$y[x$params$group == idj])
-      DCs[j] = estimated_dc[idj]
+      idj <- unique(x$params$group)[j]
+      ecdfs[[j]] <- ecdf(x$params$y[x$params$group == idj])
+      DCs[j] <- estimated_dc[idj]
     }
     plot(ecdfs[[1]], verticals=TRUE, do.points=FALSE, col = colpal[DCs[1]], 
          xlim = range(x$params$y), main = "eCDFs colored by DC",

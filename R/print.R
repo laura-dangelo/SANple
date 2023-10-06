@@ -10,7 +10,7 @@
 #' 
 #' @export
 #' @useDynLib SANple
-print.SANmcmc = function(x, ...)
+print.SANmcmc <- function(x, ...)
 {
   cat("\n")
   cat(paste("MCMC result of", x$model, "model \n"))

@@ -38,7 +38,7 @@ estimate_clusters <- function(object, burnin = NULL, ncores = 0)
   n_dc <- length(unique(estimated_dc))
   
   means <- matrix(NA, n_oc, n_dc)
-  vars <- matrix(NA, n_oc, n_dc)
+  vars <- matrix(0, n_oc, n_dc) # if singleton, variance set to zero
   
   dc_long <- estimated_dc[object$params$group]
   

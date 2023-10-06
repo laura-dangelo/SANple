@@ -32,7 +32,7 @@
 #' @importFrom grDevices devAskNewPage
 #' @export
 #' @useDynLib SANple
-traceplot = function(object, params, 
+traceplot <- function(object, params, 
                      show_density = TRUE,
                      show_burnin = TRUE,
                      length_burnin = NULL,
@@ -64,41 +64,41 @@ traceplot = function(object, params,
 #' @importFrom graphics par
 #' @importFrom grDevices devAskNewPage
 #' @keywords internal
-.traces = function(sim, params,
+.traces <- function(sim, params,
                     show_burnin,
                     length_burnin,
                     show_convergence,
                     trunc_plot)
 {
-  burnin = 1
-  if((!show_burnin) & (!is.null(length_burnin))) {burnin = 1:length_burnin}
-  if((!show_burnin) & (is.null(length_burnin))) {burnin = 1:floor(nrow(sim$mu)/3)}
+  burnin <- 1
+  if((!show_burnin) & (!is.null(length_burnin))) {burnin <- 1:length_burnin}
+  if((!show_burnin) & (is.null(length_burnin))) {burnin <- 1:floor(nrow(sim$mu)/3)}
   if("omega" %in% params) {
     warning("Traceplot for omega is not available")
-    params = params[params!="omega"]
+    params <- params[params!="omega"]
   }
 
-  stringg = paste0("sim$", params)
-  count = 0
-  tmp_names = c()
+  stringg <- paste0("sim$", params)
+  count <- 0
+  tmp_names <- c()
   
   for(i in 1:length(params))
   {
-    tmp = eval(parse(text=stringg[i]))
-    if(dim(tmp)[2] > trunc_plot) { tmp_names = c(tmp_names, params[i]) }
+    tmp <- eval(parse(text=stringg[i]))
+    if(dim(tmp)[2] > trunc_plot) { tmp_names <- c(tmp_names, params[i]) }
     for(j in 1:min(dim(tmp)[2],  trunc_plot)){
-      count = count+1
+      count <- count+1
     }
   }
-  par(mfrow=c(min(3,count),1))
+  par(mfrow = c(min(3,count),1))
 
-  devAskNewPage(ask = F)
+  devAskNewPage(ask <- F)
   for(i in 1:length(params))
   {
-    tmp = eval(parse(text=stringg[i]))
+    tmp <- eval(parse(text=stringg[i]))
     for(j in 1:min(dim(tmp)[2],  trunc_plot)){
       
-      if(dim(tmp)[2] == 1) { namem = paste0(params[i]) } else { namem = paste0(params[i],"_",j) }
+      if(dim(tmp)[2] == 1) { namem <- paste0(params[i]) } else { namem <- paste0(params[i],"_",j) }
       
       plot(tmp[-burnin,j], type="l", main = namem , xlab = "Iteration", ylab = "Value")
       if(show_convergence) {
@@ -117,41 +117,41 @@ traceplot = function(object, params,
 #' @importFrom grDevices devAskNewPage
 #' @importFrom stats density
 #' @keywords internal
-.traces_and_density = function(sim, params,
+.traces_and_density <- function(sim, params,
                    show_burnin,
                    length_burnin,
                    show_convergence,
                    trunc_plot)
 {
-  burnin = 1
-  if((!show_burnin) & (!is.null(length_burnin))) {burnin = 1:length_burnin}
-  if((!show_burnin) & (is.null(length_burnin))) {burnin = 1:floor(nrow(sim$mu)/3)}
+  burnin <- 1
+  if((!show_burnin) & (!is.null(length_burnin))) {burnin <- 1:length_burnin}
+  if((!show_burnin) & (is.null(length_burnin))) {burnin <- 1:floor(nrow(sim$mu)/3)}
   if("omega" %in% params) {
     warning("Traceplot for omega is not available")
-    params = params[params!="omega"]
+    params <- params[params!="omega"]
   }
   
-  stringg = paste0("sim$", params)
-  count = 0
-  tmp_names = c()
+  stringg <- paste0("sim$", params)
+  count <- 0
+  tmp_names <- c()
   
   for(i in 1:length(params))
   {
-    tmp = eval(parse(text=stringg[i]))
-    if(dim(tmp)[2] > trunc_plot) { tmp_names = c(tmp_names, params[i]) }
+    tmp <- eval(parse(text=stringg[i]))
+    if(dim(tmp)[2] > trunc_plot) { tmp_names <- c(tmp_names, params[i]) }
     for(j in 1:min(dim(tmp)[2],  trunc_plot)){
-      count = count+1
+      count <- count+1
     }
   }
-  par(mfrow=c(min(3,count),2))
+  par(mfrow = c(min(3,count),2))
   
   devAskNewPage(ask = F)
   for(i in 1:length(params))
   {
-    tmp = eval(parse(text=stringg[i]))
+    tmp <- eval(parse(text=stringg[i]))
     for(j in 1:min(dim(tmp)[2],  trunc_plot)){
       
-      if(dim(tmp)[2] == 1) { namem = paste0(params[i]) } else { namem = paste0(params[i],"_",j) }
+      if(dim(tmp)[2] == 1) { namem <- paste0(params[i]) } else { namem <- paste0(params[i],"_",j) }
       
       plot(tmp[-burnin,j], type="l", main = namem , xlab = "Iteration", ylab = "Value")
       if(show_convergence) {

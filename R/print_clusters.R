@@ -5,7 +5,7 @@
 #' @param ... ignored.
 #' 
 #' @export
-print.SANclusters = function(x, ...)
+print.SANclusters <- function(x, ...)
 {
 
   n_dc <- length(unique(x$est_dc))
@@ -21,13 +21,13 @@ print.SANclusters = function(x, ...)
   for(j in 1:n_dc){
     cat(paste("\nDistributional cluster",j,"\n"))
     
-    post_mean = x$clus_means[,j]
-    post_var = x$clus_var[,j]
+    post_mean <- x$clus_means[,j]
+    post_var <- x$clus_var[,j]
     
-    occupied = !is.na(x$clus_means[,j])
-    Dsubj = data.frame(cbind(post_mean, post_var))
-    Dsubj = Dsubj[occupied,]
-    rownames(Dsubj) = which(occupied)
+    occupied <- !is.na(x$clus_means[,j])
+    Dsubj <- data.frame(cbind(post_mean, post_var))
+    Dsubj <- Dsubj[occupied,]
+    rownames(Dsubj) <- which(occupied)
     print(data.frame(Dsubj))
     
   }
