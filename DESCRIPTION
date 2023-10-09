@@ -1,6 +1,6 @@
 Package: SANple
 Type: Package
-Title: Fitting Common and Shared Atoms Nested Models via MCMC
+Title: Fitting Shared Atoms Nested Models via Markov Chains Monte Carlo
 Version: 0.1.0
 Date: 2023-10-09
 Authors@R: c(
