@@ -16,14 +16,14 @@
 #' @seealso \code{\link[salso:salso]{salso::salso()}}, \code{\link{print.SANmcmc}}, \code{\link{plot.SANmcmc}}, \code{\link{print.SANclusters}}
 #'
 #' @examples 
-#' \donttest{
 #' set.seed(123)
-#' y <- c(rnorm(170),rnorm(70,5))
-#' g <- c(rep(1,100), rep(2, 140))
-#' out <- sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1)
-#' estcl <- estimate_clusters(out)
-#' estcl
-#' }
+#' y <- c(rnorm(40,0,0.3), rnorm(20,5,0.3))
+#' g <- c(rep(1,30), rep(2, 30))
+#' out <- sample_fiSAN(nrep = 500, y = y, group = g, 
+#'                     nclus_start = 2,
+#'                     maxK = 20, maxL = 20,
+#'                     beta = 1)
+#' estimate_clusters(out)
 #'
 #' @export
 #' @importFrom salso salso

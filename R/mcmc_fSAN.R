@@ -125,22 +125,22 @@
 #'
 #'
 #' @examples 
-#' \donttest{
 #' set.seed(123)
-#' y <- c(rnorm(170),rnorm(70,5))
-#' g <- c(rep(1,100), rep(2, 140))
+#' y <- c(rnorm(40,0,0.3), rnorm(20,5,0.3))
+#' g <- c(rep(1,30), rep(2, 30))
 #' plot(density(y[g==1]), xlim = c(-5,10))
 #' lines(density(y[g==2]), col = 2)
-#' out <- sample_fSAN(nrep = 3000, y = y, group = g, 
+#' out <- sample_fSAN(nrep = 500, y = y, group = g, 
+#'                    nclus_start = 2,
+#'                    maxK = 20, maxL = 20,
 #'                    alpha = 1, beta = 1)
 #' out 
-#' }
 #' 
 #' @references D’Angelo, L., Canale, A., Yu, Z., and Guindani, M. (2023). 
-#' Bayesian nonparametric analysis for the detection of spikes in noisy calcium imaging data. \emph{Biometrics}, 79(2), 1370–1382. DOI: 10.1111/biom.13626
+#' Bayesian nonparametric analysis for the detection of spikes in noisy calcium imaging data. \emph{Biometrics}, 79(2), 1370–1382. <doi:10.1111/biom.13626>
 #' 
 #' Frühwirth-Schnatter, S., Malsiner-Walli, G. and Grün, B. (2021).
-#' Generalized mixtures of finite mixtures and telescoping sampling. \emph{Bayesian Analysis}, 16(4), 1279–1307. DOI: 10.1214/21-BA1294
+#' Generalized mixtures of finite mixtures and telescoping sampling. \emph{Bayesian Analysis}, 16(4), 1279–1307. <doi:10.1214/21-BA1294>
 #'
 #' @export sample_fSAN
 #' @importFrom stats cor var dist hclust cutree rgamma 

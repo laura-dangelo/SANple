@@ -24,13 +24,15 @@
 #' @return The function displays the traceplots of the MCMC algorithm.
 #' 
 #' @examples 
-#' \donttest{
 #' set.seed(123)
-#' y <- c(rnorm(170),rnorm(70,5))
-#' g <- c(rep(1,100), rep(2, 140))
-#' out <- sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1)
+#' y <- c(rnorm(40,0,0.3), rnorm(20,5,0.3))
+#' g <- c(rep(1,30), rep(2, 30))
+#' out <- sample_fiSAN(nrep = 500, y = y, group = g, 
+#'                     nclus_start = 2,
+#'                     maxK = 20, maxL = 20,
+#'                     beta = 1)
 #' traceplot(out, params = c("mu", "sigma2"), trunc_plot = 2)
-#' }
+#' 
 #' 
 #' @importFrom graphics par
 #' @importFrom grDevices devAskNewPage
@@ -44,7 +46,8 @@ traceplot <- function(object, params,
                      trunc_plot = 10)
 {
   
-  oldpar <- par()$mfrow
+  oldpar <- par(no.readonly = TRUE) 
+  on.exit(par(oldpar)) 
 
   if(show_density){
     .traces_and_density(object$sim, params, 
@@ -60,7 +63,6 @@ traceplot <- function(object, params,
             trunc_plot)
   }
   devAskNewPage(ask = F)
-  on.exit(par(mfrow=oldpar))
 }
 
 

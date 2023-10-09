@@ -99,7 +99,7 @@ An initial guess of the number of observational clusters can be passed via the \
 }
 }
 \description{
-\code{sample_fSAN_sparsemix} is used to perform posterior inference under the finite shared atoms nested (fSAN) model with Gaussian likelihood. 
+\code{sample_fSAN_sparsemix} is used to perform posterior inference under the finite shared atoms nested (fSAN) model with Gaussian likelihood (originally proposed in D'Angelo et al., 2023). 
 The model uses overfitted (sparse) Dirichlet mixtures (Malsiner-Walli et al., 2016) at both the observational and distributional level.
 }
 \details{
@@ -134,19 +134,22 @@ The clustering of observations (observational clustering) is provided by the all
 The distribution of the probabilities is \eqn{(\omega_{1,k},\dots,\omega_{L,k})\sim Dirichlet_L(\beta,\dots,\beta)} for all \eqn{k = 1,\dots,K}.
 }
 \examples{
-\donttest{
 set.seed(123)
-y <- c(rnorm(170),rnorm(70,5))
-g <- c(rep(1,100), rep(2, 140))
+y <- c(rnorm(40,0,0.3), rnorm(20,5,0.3))
+g <- c(rep(1,30), rep(2, 30))
 plot(density(y[g==1]), xlim = c(-5,10))
 lines(density(y[g==2]), col = 2)
-out <- sample_fSAN_sparsemix(nrep = 3000, y = y, group = g, 
+out <- sample_fSAN_sparsemix(nrep = 500, y = y, group = g, 
+                             nclus_start = 2,
+                             maxK = 20, maxL = 20,
                              alpha = 0.01, beta = 0.01)
 out 
-}
 
 }
 \references{
+D’Angelo, L., Canale, A., Yu, Z., and Guindani, M. (2023). 
+Bayesian nonparametric analysis for the detection of spikes in noisy calcium imaging data. \emph{Biometrics}, 79(2), 1370–1382. <doi:10.1111/biom.13626>
+
 Malsiner-Walli, G., Frühwirth-Schnatter, S. and Grün, B. (2016). 
-Model-based clustering based on sparse finite Gaussian mixtures. Statistics and Computing 26, 303–324. DOI: 10.1007/s11222-014-9500-2
+Model-based clustering based on sparse finite Gaussian mixtures. Statistics and Computing 26, 303–324. <doi:10.1007/s11222-014-9500-2>
 }

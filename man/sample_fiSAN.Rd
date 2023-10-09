@@ -141,23 +141,24 @@ The distribution of the probabilities is \eqn{(\omega_{1,k},\dots,\omega_{L,k})\
 Moreover, the dimension \eqn{L} is random (see Frühwirth-Schnatter et al., 2021).
 }
 \examples{
-\donttest{
 set.seed(123)
-y <- c(rnorm(170),rnorm(70,5))
-g <- c(rep(1,100), rep(2, 140))
+y <- c(rnorm(40,0,0.3), rnorm(20,5,0.3))
+g <- c(rep(1,30), rep(2, 30))
 plot(density(y[g==1]), xlim = c(-5,10))
 lines(density(y[g==2]), col = 2)
-out <- sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1)
+out <- sample_fiSAN(nrep = 500, y = y, group = g, 
+                    nclus_start = 2,
+                    maxK = 20, maxL = 20,
+                    beta = 1)
 out 
-}
 
 }
 \references{
 Frühwirth-Schnatter, S., Malsiner-Walli, G. and Grün, B. (2021).
-Generalized mixtures of finite mixtures and telescoping sampling. \emph{Bayesian Analysis}, 16(4), 1279–1307. DOI: 10.1214/21-BA1294
+Generalized mixtures of finite mixtures and telescoping sampling. \emph{Bayesian Analysis}, 16(4), 1279–1307. <doi:10.1214/21-BA1294>
 
 Kalli, M., Griffin, J.E., and Walker, S.G. (2011). Slice Sampling Mixture Models, 
-\emph{Statistics and Computing}, 21, 93–105. DOI: 10.1007/s11222-009-9150-y
+\emph{Statistics and Computing}, 21, 93–105. <doi:10.1007/s11222-009-9150-y>
 
 Sethuraman, A.J. (1994). A Constructive Definition of Dirichlet Priors, \emph{Statistica Sinica}, 4, 639–650.
 }

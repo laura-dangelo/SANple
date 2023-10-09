@@ -138,24 +138,23 @@ The clustering of observations (observational clustering) is provided by the all
 The distribution of the probabilities is \eqn{ \{\omega_{l,k}\}_{l=1}^{\infty} \sim GEM(\beta)} for all \eqn{k = 1,2,\dots}
 }
 \examples{
-\donttest{
 set.seed(123)
-y <- c(rnorm(170),rnorm(70,5))
-g <- c(rep(1,100), rep(2, 140))
+y <- c(rnorm(40,0,0.3), rnorm(20,5,0.3))
+g <- c(rep(1,30), rep(2, 30))
 plot(density(y[g==1]), xlim = c(-5,10))
 lines(density(y[g==2]), col = 2)
-out <- sample_CAM(nrep = 3000, y = y, group = g,
-                  maxL = 50, maxK = 50)
+out <- sample_CAM(nrep = 500, y = y, group = g,
+                  nclus_start = 2,
+                  maxL = 20, maxK = 20)
 out 
-}
 
 }
 \references{
 Denti, F., Camerlenghi, F., Guindani, M., and Mira, A. (2023). A Common Atoms Model for the Bayesian Nonparametric Analysis of Nested Data. 
-\emph{Journal of the American Statistical Association}, 118(541), 405-416. DOI: 10.1080/01621459.2021.1933499
+\emph{Journal of the American Statistical Association}, 118(541), 405-416. <doi:10.1080/01621459.2021.1933499>
 
 Kalli, M., Griffin, J.E., and Walker, S.G. (2011). Slice Sampling Mixture Models, 
-\emph{Statistics and Computing}, 21, 93–105. DOI: 10.1007/s11222-009-9150-y
+\emph{Statistics and Computing}, 21, 93–105. <doi:10.1007/s11222-009-9150-y>
 
 Sethuraman, A.J. (1994). A Constructive Definition of Dirichlet Priors, \emph{Statistica Sinica}, 4, 639–650.
 }
