@@ -1,11 +1,18 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# SANple v0.1.0 <img src="man/figures/sanple_draft.png" align="right" width="120" />
+# SANple v0.1.0.9000 <img src="man/figures/sanple_draft.png" align="right" width="120" />
 
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/laura-dangelo/SANple/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/laura-dangelo/SANple/actions/workflows/R-CMD-check.yaml)
+[![CRAN](https://www.r-pkg.org/badges/version/SANple)](https://cran.r-project.org/package=SANple)
+[![Last
+Commit](https://img.shields.io/github/last-commit/laura-dangelo/SANple)](https://github.com/laura-dangelo/SANple)
+[![Downloads
+(monthly)](https://cranlogs.r-pkg.org/badges/SANple?color=brightgreen)](https://www.r-pkg.org/pkg/SANple)
+[![Downloads
+(total)](https://cranlogs.r-pkg.org/badges/grand-total/SANple?color=brightgreen)](https://www.r-pkg.org/pkg/SANple)
 <!-- badges: end -->
 
 The goal of SANple is to estimate Bayesian nested mixture models via
@@ -57,7 +64,7 @@ out
 #> Model estimated on 290 total observations and 2 groups 
 #> Total MCMC iterations: 3000 
 #> maxL: 50 - maxK: 50 
-#> Elapsed time: 1.553 secs
+#> Elapsed time: 1.548 secs
 clusters <- estimate_clusters(out, burnin = 2000)
 clusters
 #> 
