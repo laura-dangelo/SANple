@@ -25,6 +25,20 @@ arma::vec stick_breaking(arma::vec beta_var)
 {
   int len = beta_var.n_elem ;
   arma::vec out(len) ;
+  out(0) = beta_var(0) ;
+  arma::vec cs_log_one_m_beta = arma::cumsum(log(1.0-beta_var));
+  for(int k = 1; k < len; k++)
+  {
+    out(k) = exp( log(beta_var(k)) + cs_log_one_m_beta(k-1)) ;
+  }
+  return(out) ;
+}
+
+/* older version - to be removed
+arma::vec stick_breaking(arma::vec beta_var)
+{
+  int len = beta_var.n_elem ;
+  arma::vec out(len) ;
   
   out(0) = beta_var(0) ;
   for(int k = 1; k < len; k++)
@@ -37,7 +51,7 @@ arma::vec stick_breaking(arma::vec beta_var)
   }
   return(out) ;
 }
-
+*/
 
 
 // This function performs steps 1-4 of Algorithm 1 of Denti et al. (2021):

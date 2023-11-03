@@ -24,7 +24,6 @@ arma::vec rdirichlet(arma::vec par)
   return(out) ;
 }
 
-
 arma::vec relabel_arma(arma::vec cluster) 
 {
   int n = cluster.n_elem ;

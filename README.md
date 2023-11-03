@@ -64,7 +64,7 @@ out
 #> Model estimated on 290 total observations and 2 groups 
 #> Total MCMC iterations: 3000 
 #> maxL: 50 - maxK: 50 
-#> Elapsed time: 1.548 secs
+#> Elapsed time: 1.573 secs
 clusters <- estimate_clusters(out, burnin = 2000)
 clusters
 #> 
