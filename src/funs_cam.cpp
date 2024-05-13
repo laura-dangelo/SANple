@@ -254,7 +254,7 @@ arma::vec slicedDP_sample_distr_cluster2(const arma::vec& group,
     }
     double tmp = max(probD) ;
     // sanity check
-    arma::uvec check = find( (probD) == -arma::math::inf() );
+    arma::uvec check = find( (probD) == -arma::datum::inf );
     int cne = check.n_elem;
     if(cne==maxK_iter){
       Rcpp::Rcout<<"*";
