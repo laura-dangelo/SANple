@@ -25,7 +25,7 @@ arma::vec fcam_sample_distr_cluster(const arma::vec& y, const arma::vec& group,
     for(int k = 0; k < K_iter; k++)  // I have to compute the prob for each k = 1,..., maxK
     {
       mixdens.fill(0) ;
-      for(int i = 0; i < ind_group_j.n_elem; i++) { mixdens(i) = log( omega(M_iter(ind_group_j(i)), k) ) ; }
+      for(unsigned int i = 0; i < ind_group_j.n_elem; i++) { mixdens(i) = log( omega(M_iter(ind_group_j(i)), k) ) ; }
       sumdens = arma::accu(mixdens) ;
       if(!arma::is_finite(sumdens)) { sumdens = log(0) ;}
       probD(k) =  log( pi(k) ) + sumdens ;
@@ -132,13 +132,13 @@ int fcam_sample_K(int maxK,
   
   arma::vec prob2(K_id.n_elem) ;
   arma::vec prob(K_id.n_elem) ;
-  for(int k = 0; k < K_id.n_elem ; k++) {
+  for(unsigned int k = 0; k < K_id.n_elem ; k++) {
     prob(k) = logpost_maxx( Kplus + k , 
                             hyp_max1, hyp_max2, hyp_max3, 
                             d_par, cluster, Kplus ) ;
   }
   double minprob = prob.min() ;
-  for(int k = 0; k < K_id.n_elem ; k++)  {
+  for(unsigned int k = 0; k < K_id.n_elem ; k++)  {
     prob2(k) = exp(prob(k) - minprob) ;
   }
   

@@ -50,7 +50,7 @@ Rcpp::List sample_overficam_arma(int nrep, // number of replications of the Gibb
   sigma2.col(0) = sigma2_start ;
   out_M.col(0) = M_start ;
   out_S.col(0) = S_start ;
-  out_maxK(0) = maxK ;
+  out_maxK(0) = maxK ; // qui -1 missing?
   pi.col(0).fill(1/(maxK*1.0)) ;
   omega.slice(0).fill(1/(maxL*1.0)) ;
 
@@ -114,7 +114,7 @@ Rcpp::List sample_overficam_arma(int nrep, // number of replications of the Gibb
     omega.slice(iter+1) = dirichlet_sample_obs_weights(out_M.col(iter),
                                                        clusterD_long,
                                                        out_beta(iter)*maxL,
-                                                       out_maxK(iter+1), maxL,
+                                                       out_maxK(iter+1), maxL, // checked, added +1
                                                        maxK, maxL) ;
     
     /*---------------------------------------------*/
@@ -125,7 +125,7 @@ Rcpp::List sample_overficam_arma(int nrep, // number of replications of the Gibb
      *  UPDATE CLUSTER ASSIGNMENT
      */
     /* update distributional clusters S */
-    out_S.col(iter+1) = slicedDP_sample_distr_cluster(y, group,
+    out_S.col(iter+1) = slicedDP_sample_distr_cluster(group,
                                                       out_M.col(iter),
                                                       pi.col(iter+1), omega.slice(iter+1),
                                                       u_D, xi,

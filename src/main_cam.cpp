@@ -133,7 +133,7 @@ Rcpp::List sample_cam_arma(int nrep, // number of replications of the Gibbs samp
      */
     
     /* update distributional clusters S */
-    out_S.col(iter+1) = slicedDP_sample_distr_cluster(y, group,
+    out_S.col(iter+1) = slicedDP_sample_distr_cluster(group,
                                                      out_M.col(iter),
                                                      pi.col(iter+1), omega.slice(iter+1),
                                                      u_D, xi,

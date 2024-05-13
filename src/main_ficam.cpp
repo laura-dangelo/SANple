@@ -49,8 +49,9 @@ Rcpp::List sample_ficam_arma(int nrep, // number of replications of the Gibbs sa
   sigma2.col(0) = sigma2_start ;
   out_M.col(0) = M_start ;
   out_S.col(0) = S_start ;
-  out_maxK(0) = maxK -1 ;
-  out_L(0) = maxL -1 ;
+  out_maxK(0) = maxK; // checked: removed - 1
+  out_L(0) = maxL;  // checked: removed - 1
+  ///
   out_Lplus(0) = out_M.col(0).max() + 1 ;
   pi.col(0) = arma::ones(maxK)/maxK ;
   omega.slice(0) = arma::ones(maxL, maxK) / maxL ;
@@ -58,7 +59,7 @@ Rcpp::List sample_ficam_arma(int nrep, // number of replications of the Gibbs sa
   Rcpp::List tmp_obs_cl ;
   Rcpp::List out_params ;
   Rcpp::List weights_slice_sampler ;
-  arma::vec u_D(G, arma::fill::zeros) ;
+  //arma::vec u_D(G, arma::fill::zeros) ;
 
   if(fixed_alpha) {
     out_alpha.fill(alpha) ;
@@ -120,7 +121,7 @@ Rcpp::List sample_ficam_arma(int nrep, // number of replications of the Gibbs sa
     omega.slice(iter+1) = dirichlet_sample_obs_weights(out_M.col(iter),
                 clusterD_long,
                 out_beta(iter),
-                out_maxK(iter), out_L(iter),
+                out_maxK(iter+1), out_L(iter),  // checked: added iter + 1
                 maxK, maxL) ;
     
     // pi.col(iter+1) = pi.col(iter) ;
@@ -132,7 +133,9 @@ Rcpp::List sample_ficam_arma(int nrep, // number of replications of the Gibbs sa
      *  UPDATE CLUSTER ASSIGNMENT
      */
     /* update distributional clusters S */
-     out_S.col(iter+1) = slicedDP_sample_distr_cluster(y, group,
+    /// !!!!!! attention, I changed the function here!
+    // out_S.col(iter+1) = slicedDP_sample_distr_cluster2(group,
+    out_S.col(iter+1) = slicedDP_sample_distr_cluster(group,
                                                        out_M.col(iter), 
                                                        pi.col(iter+1), omega.slice(iter+1), 
                                                        u_D, xi, 
@@ -171,7 +174,7 @@ Rcpp::List sample_ficam_arma(int nrep, // number of replications of the Gibbs sa
      *  UPDATE THE NUMBER OF COMPONENTS
      */
     /* update observational clusters out_L */
-    out_L(iter + 1) = fcam_sample_K(maxL,
+    out_L(iter + 1) = fcam_sample_K(maxL -1,  // checked: added - 1
                                     out_Lplus(iter+1),
                                     1, 4, 3,
                                     out_beta(iter),
@@ -183,7 +186,9 @@ Rcpp::List sample_ficam_arma(int nrep, // number of replications of the Gibbs sa
       countL++ ;
       out_L(iter + 1) = maxL-1 ; }
     
-    mu(arma::span(out_L(iter+1), maxL-1), arma::span(iter+1)) = arma::zeros(maxL - out_L(iter+1)) ;
+    mu(arma::span(out_L(iter+1), maxL-1), 
+       arma::span(iter+1)) = // span e' necessario?
+         arma::zeros(maxL - out_L(iter+1)) ;
     sigma2(arma::span(out_L(iter+1), maxL-1), iter+1) = arma::zeros(maxL - out_L(iter+1)) ;
 
     // out_L(iter + 1) = out_L(iter) ;

@@ -91,7 +91,7 @@ arma::vec sample_distr_cluster(const arma::vec& y, const arma::vec& group,
     
     for(int k = 0; k < K_iter; k++)  // I have to compute the prob for each k = 1,..., maxK
     {
-      for(int i = 0; i < ind_group_j.n_elem; i++)
+      for(unsigned int i = 0; i < ind_group_j.n_elem; i++)
       {
         mixdens(i) = 0 ;
         for(int l = 0; l < L_iter; l++) {

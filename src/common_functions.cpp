@@ -38,7 +38,7 @@ arma::vec relabel_arma(arma::vec cluster)
     for(int k = 0; k < n_distinct ; k++) {
       lab = uniquecl[k] ;
       arma::uvec indlab = find(cluster == lab) ;
-      for(int h = 0; h < indlab.n_elem; h++) { newlabels[indlab[h]] = k ; }
+      for(unsigned int h = 0; h < indlab.n_elem; h++) { newlabels[indlab[h]] = k ; }
     }
   } else {
     newlabels = cluster ;

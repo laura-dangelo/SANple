@@ -33,7 +33,7 @@ arma::vec stick_breaking(arma::vec beta_var)
   }
   return(out) ;
 }
-
+ 
 /* older version - to be removed
 arma::vec stick_breaking(arma::vec beta_var)
 {
@@ -51,7 +51,7 @@ arma::vec stick_breaking(arma::vec beta_var)
   }
   return(out) ;
 }
-*/
+ */
 
 
 // This function performs steps 1-4 of Algorithm 1 of Denti et al. (2021):
@@ -178,7 +178,7 @@ Rcpp::List weights_update_slice_sampler(const arma::vec& y, const arma::vec& gro
 
 // This function performs step 5 of Algorithm 1 of Denti et al. (2021):
 // sample distributional cluster allocation S_j
-arma::vec slicedDP_sample_distr_cluster(const arma::vec& y, const arma::vec& group,
+arma::vec slicedDP_sample_distr_cluster(const arma::vec& group,
                                         arma::vec M_iter,
                                         arma::vec pi, arma::mat omega,
                                         arma::vec u_D,
@@ -193,7 +193,11 @@ arma::vec slicedDP_sample_distr_cluster(const arma::vec& y, const arma::vec& gro
   arma::vec probD(maxK_iter) ;
   arma::vec out(G) ;
   double sumdens ;
-
+  //Rcpp::Rcout<< omega;
+  //Rcpp::Rcout<< "\n-----\n";  
+  //Rcpp::Rcout<< M_iter;
+  
+  
   // S_j is categorical, with Pr( S_j = k | - ) = I(u_j < xi_k) pi_k/xi_k * ( om_1k^#(M_ij = 1) ... om_Lk^#(M_ij = L) )
   // hence the log is:  log(pi_k) - log(xi_k) + sum_l  #(M_ij = l) * log( om_lk )
   for(int j = 0; j < G; j++)
@@ -203,7 +207,7 @@ arma::vec slicedDP_sample_distr_cluster(const arma::vec& y, const arma::vec& gro
    
     for(int k = 0; k < maxK_iter; k++)  // I have to compute the prob for each k = 1,..., K_iter
     {
-      for(int i = 0; i < ind_group_j.n_elem; i++) { mixdens(i) = log( omega(M_iter(ind_group_j(i)), k) ) ; }
+      for(unsigned int i = 0; i < ind_group_j.n_elem; i++) { mixdens(i) = log( omega(M_iter(ind_group_j(i)), k) ) ; }
       sumdens = arma::accu(mixdens) ;
       if(!arma::is_finite(sumdens)) { sumdens = log(0) ;}
       probD(k) =  log( pi(k) ) - log( xi(k) ) + sumdens + log(u_D(j) < xi(k));
@@ -217,7 +221,52 @@ arma::vec slicedDP_sample_distr_cluster(const arma::vec& y, const arma::vec& gro
   return(out) ;
 }
 
-
+// This function performs step 5 of Algorithm 1 of Denti et al. (2021):
+// sample distributional cluster allocation S_j
+arma::vec slicedDP_sample_distr_cluster2(const arma::vec& group,
+                                        arma::vec M_iter,
+                                        arma::vec pi, arma::mat omega,
+                                        arma::vec u_D,
+                                        arma::vec xi,
+                                        int maxK_iter)
+{
+  
+  arma::vec unique_groups = arma::unique(group) ;
+  int G = unique_groups.n_elem ;
+  
+  arma::vec distr_cluster_id = arma::linspace(0, maxK_iter-1, maxK_iter) ;
+  arma::vec probD(maxK_iter) ;
+  arma::vec out(G) ;
+  double sumdens ;
+  // S_j is categorical, with Pr( S_j = k | - ) = I(u_j < xi_k) pi_k/xi_k * ( om_1k^#(M_ij = 1) ... om_Lk^#(M_ij = L) )
+  // hence the log is:  log(pi_k) - log(xi_k) + sum_l  #(M_ij = l) * log( om_lk )
+  for(int j = 0; j < G; j++)
+  {
+    arma::uvec ind_group_j = find(group == j) ;  // restrict to observations in the j-th population
+    arma::vec mixdens(ind_group_j.n_elem) ;
+    probD.zeros();
+    for(int k = 0; k < maxK_iter; k++)  // I have to compute the prob for each k = 1,..., K_iter
+    {
+      for(unsigned int i = 0; i < ind_group_j.n_elem; i++) { mixdens(i) = log( omega(M_iter(ind_group_j(i)), k) ) ; }
+      sumdens = arma::accu(mixdens) ;
+      if(!arma::is_finite(sumdens)) { sumdens = log(0) ;}
+      probD(k) =  log( pi(k) ) - log( xi(k) ) + sumdens + log(u_D(j) < xi(k));
+    }
+    double tmp = max(probD) ;
+    // sanity check
+    arma::uvec check = find( (probD) == -arma::math::inf() );
+    int cne = check.n_elem;
+    if(cne==maxK_iter){
+      Rcpp::Rcout<<"*";
+      probD.fill(1.0/maxK_iter);
+    }else{
+      probD = exp(probD - tmp) ;  // removed useless for loop
+    }
+    out(j) = sample_i(distr_cluster_id, probD) ;
+  }
+  
+  return(out) ;
+}
 
 // This function performs step 6 of Algorithm 1 of Denti et al. (2021):
 // sample observational cluster allocation M_ij
@@ -301,8 +350,7 @@ double sample_beta(double hyp_beta1, double hyp_beta2,
       bar_Ms(k) = subM.max() ; 
       for(int l = 0; l < subM.max(); l++) 
       {
-        arma::uvec ind_clusterO_l = find(subM == l) ; 
-        if(ind_clusterO_l.n_elem > 0) { sum_log_mbeta = sum_log_mbeta + log( 1-obs_beta_rv(l,k) ) ; }
+        sum_log_mbeta = sum_log_mbeta + log( 1-obs_beta_rv(l,k) ) ; 
       }
     }
   }

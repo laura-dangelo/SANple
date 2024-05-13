@@ -1,7 +1,7 @@
 Package: SANple
 Type: Package
 Title: Fitting Shared Atoms Nested Models via Markov Chains Monte Carlo
-Version: 0.1.0.9000
+Version: 0.1.1
 Date: 2023-10-09
 Authors@R: c(
     person("Laura", "D'Angelo", ,"laura.dangelo@live.com", 

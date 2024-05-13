@@ -226,7 +226,7 @@ sample_fiSAN <- function(nrep, y, group,
       
       if(is.null(nclus_start)) { nclus_start <- min(c(maxL, 30))}
       M_start <- stats::kmeans(y,
-                              centers <- nclus_start, 
+                              centers = nclus_start, 
                               algorithm="MacQueen",
                               iter.max = 50)$cluster 
       
