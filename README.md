@@ -54,9 +54,6 @@ lines(density(y[g==2]), col = "cyan4")
 
 ``` r
 out <- sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1)
-#> Warning in sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1): Increase
-#> maxL: all the provided observational mixture components were used. Check
-#> '$warnings' to see when it happened.
 out 
 #> 
 #> MCMC result of fiSAN model 
@@ -64,7 +61,7 @@ out
 #> Model estimated on 290 total observations and 2 groups 
 #> Total MCMC iterations: 3000 
 #> maxL: 50 - maxK: 50 
-#> Elapsed time: 1.573 secs
+#> Elapsed time: 1.773 secs
 clusters <- estimate_clusters(out, burnin = 2000)
 clusters
 #> 
@@ -97,7 +94,7 @@ imaging data. *Biometrics* 79(2), 1370–1382.
 
 D’Angelo, L., and Denti, F. (2024+). A finite-infinite shared atoms
 nested model for the Bayesian analysis of large grouped data sets.
-*Working paper*, 1–23.
+*Working paper*, 1–34
 
 Denti, F., Camerlenghi, F., Guindani, M., Mira, A., 2023. A Common Atoms
 Model for the Bayesian Nonparametric Analysis of Nested Data. *Journal

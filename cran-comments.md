@@ -8,7 +8,6 @@ In this release
 * we fixed a bug in the full conditional of the concentration parameter for the observational DP of CAM.
 
 
-
 ## R CMD check results
 
 - Running `devtools::check(args = c('--as-cran','--no-manual'))` locally produces no errors, warnings, or notes.
