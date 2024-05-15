@@ -2,7 +2,7 @@ Package: SANple
 Type: Package
 Title: Fitting Shared Atoms Nested Models via Markov Chains Monte Carlo
 Version: 0.1.1
-Date: 2023-10-09
+Date: 2024-05-13
 Authors@R: c(
     person("Laura", "D'Angelo", ,"laura.dangelo@live.com", 
     role = c("aut", "cre", "cph"),
@@ -27,5 +27,5 @@ Depends:
     scales, RColorBrewer
 LinkingTo: 
     Rcpp, RcppArmadillo, RcppProgress
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Encoding: UTF-8

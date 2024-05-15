@@ -34,25 +34,6 @@ arma::vec stick_breaking(arma::vec beta_var)
   return(out) ;
 }
  
-/* older version - to be removed
-arma::vec stick_breaking(arma::vec beta_var)
-{
-  int len = beta_var.n_elem ;
-  arma::vec out(len) ;
-  
-  out(0) = beta_var(0) ;
-  for(int k = 1; k < len; k++)
-  {
-    arma::vec tmp(k) ;
-    for(int t = 0; t < k; t++) { tmp(t) = log(1 - beta_var(t)) ; }
-    double tmp1 = arma::accu(tmp) ;
-    if(!arma::is_finite(tmp1)) { tmp1 = log(0) ;}
-    out(k) = exp(log(beta_var(k)) + tmp1) ;
-  }
-  return(out) ;
-}
- */
-
 
 // This function performs steps 1-4 of Algorithm 1 of Denti et al. (2021):
 // - sample observational and distributional slice variables,

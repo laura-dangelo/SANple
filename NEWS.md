@@ -1,12 +1,9 @@
-# SANple (development version)
+# SANple 0.1.1 (development version)
 
--futura versione 0.1.1
-
-* Improve efficiency of stick-breaking computation
-* Improve initialization of the algorithms
-* Changed cpp for loops indexes from int to unsigned int when needed
-* ha senso chiamare gli header di tutti ovunque? credo sia questo che renda il pacchetto pesantissimo
-* Fixed a bug in the full conditional of the concentration parameter for the observational DP of CAM
+* Improved efficiency of stick-breaking computation;
+* Improved initialization of the algorithms, streamlined some scripts;
+* Changed cpp `for loops` indexes from int to unsigned int when needed;
+* Fixed a bug in the full conditional of the concentration parameter for the observational DP of CAM.
 
 # SANple 0.1.0
 
