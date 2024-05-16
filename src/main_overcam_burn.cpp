@@ -5,7 +5,8 @@
 #include <progress_bar.hpp>
 
 // [[Rcpp::export]]
-Rcpp::List sample_overcam_arma(int nrep, // number of replications of the Gibbs sampler
+Rcpp::List sample_overcam_burn(int nrep, // number of replications of the Gibbs sampler
+                               int burn,
                                const arma::vec & y, // input data
                                const arma::vec & group, // group assignment for each observation in the vector y
                                int maxK, // maximum number of distributional clusters
@@ -31,68 +32,83 @@ Rcpp::List sample_overcam_arma(int nrep, // number of replications of the Gibbs 
   arma::vec unique_groups = arma::unique(group) ;
   int G = unique_groups.n_elem ;
   
+  
   // allocate output matrices
-  arma::mat mu(maxL, nrep, arma::fill::zeros) ; 
-  arma::mat sigma2(maxL, nrep, arma::fill::ones) ; 
-  arma::mat out_S(G, nrep) ;
-  arma::mat out_M(N, nrep) ;
-  arma::mat pi(maxK, nrep, arma::fill::zeros) ;
-  arma::cube omega(maxL, maxK, nrep, arma::fill::zeros) ; 
-  arma::vec out_alpha(nrep) ; // Dirichlet parameter for the distributional weights 
-  arma::vec out_beta(nrep) ; // Dirichlet parameter for the observational weights 
+  arma::mat mu(maxL, nrep - burn, arma::fill::zeros) ; 
+  arma::mat sigma2(maxL, nrep - burn, arma::fill::ones) ; 
+  arma::mat out_S(G, nrep - burn) ; // distributional clusters
+  arma::mat out_M(N, nrep - burn) ; // observational clusters
+  arma::mat out_pi(maxK, nrep - burn, arma::fill::zeros) ;
+  arma::cube out_omega(maxL, maxK, nrep - burn, arma::fill::zeros) ; 
+  arma::vec out_alpha(nrep - burn) ; // DP parameter for the distributional weights 
+  arma::vec out_beta(nrep - burn) ; // DP parameter for the observational weights 
+  arma::vec out_maxK(nrep - burn) ; 
+  arma::vec out_maxL(nrep - burn) ;
   
   // initialization
-  mu.col(0) = mu_start ;
-  sigma2.col(0) = sigma2_start ;
-  out_M.col(0) = M_start ;
-  out_S.col(0) = S_start ;
+  arma::vec current_mu = mu_start ;
+  arma::vec current_sigma2 = sigma2_start ;
+  arma::vec current_M = M_start;
+  arma::vec current_S = S_start;
+  arma::vec current_pi(maxK) ; 
+  current_pi.fill(1.0/(maxK));
+  arma::mat current_omega(maxL,maxK) ; 
+  current_omega.fill(1.0/(maxL));
+  
+  
+  double current_beta = 0;
+  double current_alpha = 0;
   
   if(fixed_alpha) { 
     out_alpha.fill(alpha) ; 
+    current_alpha = alpha_start ;
   } else {
-    out_alpha(0) = alpha_start ;
+    current_alpha = alpha_start ;
   }
   
   if(fixed_beta) { 
     out_beta.fill(beta) ; 
+    current_beta = beta_start;
   } else {
-    out_beta(0) = beta_start ; 
+    current_beta = beta_start ;
   }
   
-  // other auxiliary quantities
-  Rcpp::List out_params ;
-  arma::vec clusterD_long(N) ; 
-  for(int i = 0; i < N; i++) { clusterD_long(i) = out_S( group(i), 0 ) ; }
   
-  arma::vec iters_maxL(nrep-1);
-  arma::vec iters_maxK(nrep-1);
+  
+  // auxiliary quantities
+  arma::vec clusterD_long(N) ; 
+  for(int i = 0; i < N; i++) { clusterD_long(i) = S_start( group(i) ) ; }
+  Rcpp::List out_params ;
+  
+  arma::vec iters_maxL(nrep-burn);
+  arma::vec iters_maxK(nrep-burn);
   
   // progress bar 
   bool display_progress = progressbar ;
   Progress p(nrep, display_progress) ;
   
   // START
-  for(int iter = 0; iter < nrep -1 ; iter++)
+  for(int iter = 0; iter < nrep ; iter++)
   {
     if( Progress::check_abort() ) { return -1.0 ; }
     p.increment();
-    
+
     /*---------------------------------------------*/
     /*
      *  UPDATE MIXTURE WEIGHTS
      */
     /* sample distributional probabilities pi */
-    pi.col(iter+1) = dirichlet_sample_distr_weights(out_S.col(iter), 
-                                                    out_alpha(iter)*maxK, 
-                                                    maxK, 
-                                                    maxK) ;
-    
+    current_pi = dirichlet_sample_distr_weights(current_S, 
+           current_alpha*maxK, 
+           maxK, 
+           maxK) ;
+
     /* for each distributional cluster k, sample observational probabilities omega */
-    omega.slice(iter+1) = dirichlet_sample_obs_weights(out_M.col(iter), 
-                                                       clusterD_long,
-                                                       out_beta(iter)*maxL,
-                                                       maxK, maxL,
-                                                       maxK, maxL) ;
+    current_omega = dirichlet_sample_obs_weights(current_M, 
+                clusterD_long,
+                current_beta*maxL,
+                maxK, maxL,
+                maxK, maxL) ;
     /*---------------------------------------------*/
     
     
@@ -100,21 +116,22 @@ Rcpp::List sample_overcam_arma(int nrep, // number of replications of the Gibbs 
     /*
      *  UPDATE CLUSTER ASSIGNMENT
      */
-    
+
     /* update distributional clusters S */
-    out_S.col(iter+1) = sample_distr_cluster(y, group,
-                                             pi.col(iter+1), omega.slice(iter+1),
-                                             maxK, maxL,
-                                             mu.col(iter), sigma2.col(iter)) ;
+    current_S = sample_distr_cluster(y, group,
+              current_pi, current_omega,
+              maxK, maxL,
+              current_mu, current_sigma2) ;
     
-    for(int i = 0; i < N; i++) { clusterD_long(i) = out_S( group(i), iter+1 ) ; }
-    
+    for(int i = 0; i < N; i++) { clusterD_long(i) = current_S( group(i) ) ; }
+
     /* update observational clusters M */
-    out_M.col(iter+1) = sample_obs_cluster(y, 
-                                           clusterD_long,
-                                           omega.slice(iter+1),
-                                           maxK, maxL,
-                                           mu.col(iter), sigma2.col(iter)) ;
+    current_M = sample_obs_cluster(y, 
+                                   clusterD_long,
+                                   current_omega,
+                                   maxK, maxL,
+                                   current_mu, 
+                                   current_sigma2) ;
     
     /*---------------------------------------------*/
     
@@ -123,15 +140,15 @@ Rcpp::List sample_overcam_arma(int nrep, // number of replications of the Gibbs 
     /*
      *  UPDATE PARAMETERS
      */
-    out_params = sample_model_parameters(y, out_M.col(iter+1),
+    out_params = sample_model_parameters(y, current_M,
                                          maxL,
                                          m0, tau0, lambda0, gamma0) ;
     
     arma::vec tmp_mu = out_params["out_mu"] ;
-    mu.col(iter+1) = tmp_mu ; 
+    current_mu = tmp_mu ; 
     
     arma::vec tmp_sigma2 = out_params["out_sigma2"] ;
-    sigma2.col(iter+1) = tmp_sigma2 ; 
+    current_sigma2 = tmp_sigma2 ; 
     
     /*---------------------------------------------*/
     
@@ -142,25 +159,52 @@ Rcpp::List sample_overcam_arma(int nrep, // number of replications of the Gibbs 
      */
     /* sample alpha */
     if(!fixed_alpha) {
-      out_alpha(iter+1) = overcam_MH_alpha(out_alpha(iter), eps_alpha, pi.col(iter+1), hyp_alpha) ;
+      current_alpha = overcam_MH_alpha(current_alpha, 
+                                       eps_alpha, 
+                                       current_pi, hyp_alpha) ;
     }
     
     /* sample beta */
     if(!fixed_beta) {
-      out_beta(iter+1) = overcam_MH_beta(out_beta(iter), eps_beta, omega.slice(iter+1), hyp_beta) ;
+      current_beta = overcam_MH_beta(current_beta, eps_beta, 
+                                     current_omega, hyp_beta) ;
     }
     /*---------------------------------------------*/
     
+    // saving
+    
+    if(iter >= burn){
+      int ind = iter-burn;
+      //Rcpp::Rcout << ind << "\n";
+      
+      mu.col(ind) = current_mu;
+      sigma2.col(ind) = current_sigma2;
+      //Rcpp::Rcout << "a";
+
+      out_alpha(ind) = current_alpha;  
+      out_beta(ind)  = current_beta;  
+      //Rcpp::Rcout << "c";
+      
+      out_pi.col(ind) = current_pi;
+      out_omega.slice(ind) = current_omega;
+      //      Rcpp::Rcout << "d";
+      
+      out_S.col(ind) = current_S;
+      out_M.col(ind) = current_M;
+      //      Rcpp::Rcout << "e";
+      
+    }
+
     // END
   }
-  
   
   return Rcpp::List::create(Rcpp::Named("mu") = mu.t(),
                             Rcpp::Named("sigma2") = sigma2.t(),
                             Rcpp::Named("obs_cluster") = out_M.t(),
                             Rcpp::Named("distr_cluster") = out_S.t(),
-                            Rcpp::Named("pi") = pi.t(),
-                            Rcpp::Named("omega") = omega,
+                            Rcpp::Named("pi") = out_pi.t(),
+                            Rcpp::Named("omega") = out_omega,
                             Rcpp::Named("alpha") = out_alpha,
                             Rcpp::Named("beta") = out_beta);
+
 }

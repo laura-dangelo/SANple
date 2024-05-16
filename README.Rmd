@@ -48,9 +48,9 @@ y <- c(rnorm(50,-5,1), rnorm(170,0,1),rnorm(70,5,1))
 g <- c(rep(1,150), rep(2, 140))
 plot(density(y[g==1]), xlim = c(-10,10), main = "", xlab = "")
 lines(density(y[g==2]), col = "cyan4")
-out <- sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1)
+out <- sample_fiSAN(nrep = 3000, burn = 1000, y = y, group = g, beta = 1)
 out 
-clusters <- estimate_clusters(out, burnin = 2000)
+clusters <- estimate_clusters(out)
 clusters
 plot(out, estimated_clusters = clusters)
 ```

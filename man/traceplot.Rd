@@ -40,7 +40,8 @@ The function is not available for the observational weights \eqn{\omega}.
 set.seed(123)
 y <- c(rnorm(40,0,0.3), rnorm(20,5,0.3))
 g <- c(rep(1,30), rep(2, 30))
-out <- sample_fiSAN(nrep = 500, y = y, group = g, 
+out <- sample_fiSAN(nrep = 500, burn = 200, 
+                    y = y, group = g, 
                     nclus_start = 2,
                     maxK = 20, maxL = 20,
                     beta = 1)

@@ -19,7 +19,8 @@
 #' set.seed(123)
 #' y <- c(rnorm(40,0,0.3), rnorm(20,5,0.3))
 #' g <- c(rep(1,30), rep(2, 30))
-#' out <- sample_fiSAN(nrep = 500, y = y, group = g, 
+#' out <- sample_fiSAN(nrep = 500, burn = 200,
+#'                      y = y, group = g, 
 #'                     nclus_start = 2,
 #'                     maxK = 20, maxL = 20,
 #'                     beta = 1)
@@ -28,12 +29,19 @@
 #' @export
 #' @importFrom salso salso
 #' @useDynLib SANple
-estimate_clusters <- function(object, burnin = NULL, ncores = 0)
+estimate_clusters <- function(object, burnin = 0, ncores = 0)
 {
   
-  if(is.null(burnin)) { burnin <- 1:round(object$params$nrep/3*2) }
-  estimated_oc <- suppressWarnings(salso::salso(object$sim$obs_cluster[-burnin,], nCores = ncores)) 
-  estimated_dc <- suppressWarnings(salso::salso(object$sim$distr_cluster[-burnin,], nCores = ncores))
+  if(burnin>0) { 
+      OC <- object$sim$obs_cluster[-burnin,] 
+      DC <- object$sim$distr_cluster[-burnin,]
+  }else{
+    OC <- object$sim$obs_cluster 
+    DC <- object$sim$distr_cluster
+  }
+  
+  estimated_oc <- suppressWarnings(salso::salso(OC, nCores = ncores)) 
+  estimated_dc <- suppressWarnings(salso::salso(DC, nCores = ncores))
   
   n_oc <- length(unique(estimated_oc))
   n_dc <- length(unique(estimated_dc))

@@ -4,7 +4,7 @@
 \alias{estimate_clusters}
 \title{Estimate observational and distributional clusters}
 \usage{
-estimate_clusters(object, burnin = NULL, ncores = 0)
+estimate_clusters(object, burnin = 0, ncores = 0)
 }
 \arguments{
 \item{object}{object of class \code{SANmcmc} (the result of a call to \code{\link{sample_fiSAN}}, \code{\link{sample_fiSAN_sparsemix}}, 
@@ -32,7 +32,8 @@ Given the MCMC output, estimate the observational and distributional partitions 
 set.seed(123)
 y <- c(rnorm(40,0,0.3), rnorm(20,5,0.3))
 g <- c(rep(1,30), rep(2, 30))
-out <- sample_fiSAN(nrep = 500, y = y, group = g, 
+out <- sample_fiSAN(nrep = 500, burn = 200,
+                     y = y, group = g, 
                     nclus_start = 2,
                     maxK = 20, maxL = 20,
                     beta = 1)

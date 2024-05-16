@@ -1,11 +1,13 @@
 ## SANple 0.1.1
 
-In this release
+In this release we
 
-* we improved efficiency of stick-breaking computation;
-* we improved initialization of the algorithms, and streamlined some scripts;
-* we changed cpp `for loops` indexes from int to unsigned int when needed;
-* we fixed a bug in the full conditional of the concentration parameter for the observational DP of CAM.
+* Updated the MCMC functions to take a `burn in` value as input;
+* Some algorithms ran `nrep-1` iterations. Updated to `nrep`;
+* Improved efficiency of stick-breaking computation;
+* Improved the initialization of the algorithms, streamlined some scripts;
+* Changed `.cpp` `for loops` indexes from `int` to `unsigned int` when needed;
+* Fixed a bug in the full conditional of the concentration parameter for the observational DP of CAM.
 
 
 ## R CMD check results

@@ -8,9 +8,9 @@
   x,
   type = c("boxplot", "ecdf", "scatter"),
   estimated_clusters = NULL,
-  burnin = NULL,
+  burnin = 0,
   palette_brewed = FALSE,
-  ncores = 0,
+  ncores = 1,
   ...
 )
 }
@@ -42,7 +42,8 @@ The function displays two graphs, meant to analyze the estimated distributional 
 set.seed(123)
 y <- c(rnorm(40,0,0.3), rnorm(20,5,0.3))
 g <- c(rep(1,30), rep(2, 30))
-out <- sample_fiSAN(nrep = 500, y = y, group = g, 
+out <- sample_fiSAN(nrep = 500, burn = 200, 
+                    y = y, group = g, 
                     nclus_start = 2,
                     maxK = 20, maxL = 20,
                     beta = 1)

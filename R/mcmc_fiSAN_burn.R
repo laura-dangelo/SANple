@@ -7,7 +7,7 @@
 #' 
 #' 
 #' @usage 
-#' sample_fiSAN(nrep, y, group, 
+#' sample_fiSAN(nrep, burn, y, group, 
 #'              maxK = 50, maxL = 50, 
 #'              m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
 #'              hyp_alpha1 = 1, hyp_alpha2 = 1,
@@ -21,6 +21,7 @@
 #'              progress = TRUE, seed = NULL)
 #' 
 #' @param nrep Number of MCMC iterations.
+#' @param burn Number of discarded iterations.
 #' @param y Vector of observations.
 #' @param group Vector of the same length of y indicating the group membership (numeric).
 #' @param maxK Maximum number of distributional clusters \eqn{K} (default = 50).
@@ -130,7 +131,7 @@
 #' g <- c(rep(1,30), rep(2, 30))
 #' plot(density(y[g==1]), xlim = c(-5,10))
 #' lines(density(y[g==2]), col = 2)
-#' out <- sample_fiSAN(nrep = 500, y = y, group = g, 
+#' out <- sample_fiSAN(nrep = 500, burn = 200, y = y, group = g, 
 #'                     nclus_start = 2,
 #'                     maxK = 20, maxL = 20,
 #'                     beta = 1)
@@ -147,19 +148,19 @@
 #'
 #' @export sample_fiSAN
 #' @importFrom stats cor var dist hclust cutree rgamma 
-sample_fiSAN <- function(nrep, y, group, 
-                       maxK = 50, maxL = 50, 
-                       m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
-                       hyp_alpha1 = 1, hyp_alpha2 = 1,
-                       hyp_beta1 = 6, hyp_beta2 = 3, 
-                       eps_beta = NULL,
-                       alpha = NULL, beta = NULL,
-                       warmstart = TRUE, nclus_start = NULL,
-                       mu_start = NULL, sigma2_start = NULL,
-                       M_start = NULL, S_start = NULL,
-                       alpha_start = NULL, beta_start = NULL,
-                       progress = TRUE,
-                       seed = NULL)
+sample_fiSAN <- function(nrep, burn, y, group, 
+                         maxK = 50, maxL = 50, 
+                         m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
+                         hyp_alpha1 = 1, hyp_alpha2 = 1,
+                         hyp_beta1 = 6, hyp_beta2 = 3, 
+                         eps_beta = NULL,
+                         alpha = NULL, beta = NULL,
+                         warmstart = TRUE, nclus_start = NULL,
+                         mu_start = NULL, sigma2_start = NULL,
+                         M_start = NULL, S_start = NULL,
+                         alpha_start = NULL, beta_start = NULL,
+                         progress = TRUE,
+                         seed = NULL)
 {
   group <- .relabell(group) - 1 
   
@@ -167,13 +168,13 @@ sample_fiSAN <- function(nrep, y, group,
   set.seed(seed)
   
   params <- list(nrep = nrep, 
-                y = y,
-                group = group+1, 
-                maxK = maxK, 
-                maxL = maxL, 
-                m0 = m0, tau0 = tau0,
-                lambda0 = lambda0, gamma0 = gamma0,
-                seed = seed)
+                 y = y,
+                 group = group+1, 
+                 maxK = maxK, 
+                 maxL = maxL, 
+                 m0 = m0, tau0 = tau0,
+                 lambda0 = lambda0, gamma0 = gamma0,
+                 seed = seed)
   
   if(!is.null(alpha)) { params$alpha <- alpha }
   if(!is.null(beta)) { params$beta <- beta }
@@ -226,9 +227,9 @@ sample_fiSAN <- function(nrep, y, group,
       
       if(is.null(nclus_start)) { nclus_start <- min(c(maxL, 30))}
       M_start <- stats::kmeans(y,
-                              centers = nclus_start, 
-                              algorithm="MacQueen",
-                              iter.max = 50)$cluster 
+                               centers = nclus_start, 
+                               algorithm="MacQueen",
+                               iter.max = 50)$cluster 
       
       nclus_start <- length(unique(M_start))
       mu_start[1:nclus_start] <- sapply(1:nclus_start, function(x) mean(y[M_start == x])) 
@@ -246,14 +247,19 @@ sample_fiSAN <- function(nrep, y, group,
   fixed_alpha <- F
   fixed_beta <- F
   if(!is.null(alpha) ) {
-    fixed_alpha <- T ; } else { alpha <- 1 }
+    fixed_alpha <- T ; 
+    alpha_start <- alpha
+    eps_alpha <- 1
+  } else { alpha <- 1 }
   if(!is.null(beta) ) {
-    fixed_beta <- T ; eps_beta <- 1 } else { beta <- 1 }
+    beta_start <- beta
+    fixed_beta <- T ; 
+    eps_beta <- 1 } else { beta <- 1 }
   
   if((fixed_beta == F)&(is.null(eps_beta))) {stop("Missing eps parameter for MH step on beta Please provide 'eps_beta' or a fixed 'beta' value.")}
   
   start <- Sys.time()
-  out <- sample_ficam_arma(nrep, y, group, 
+  out <- sample_ficam_burn(nrep, burn, y, group, 
                            maxK, maxL, 
                            m0, tau0, 
                            lambda0, gamma0,
@@ -277,34 +283,34 @@ sample_fiSAN <- function(nrep, y, group,
   
   if(length(warnings) == 2) {
     output <- list( "model" = "fiSAN",
-                   "params" = params,
-                   "sim" = out,
-                   "time" = end - start,
-                   "warnings" = warnings)
+                    "params" = params,
+                    "sim" = out,
+                    "time" = end - start,
+                    "warnings" = warnings)
     warning("Increase maxL and maxK: all the provided mixture components were used. Check $warnings to see when it happened.")
   } else if (length(warnings) == 1) {
     if((length(warnings$top_maxK)>0) & (length(warnings$top_maxL)==0)) {
       output <- list( "model" = "fiSAN",
-                     "params" = params,
-                     "sim" = out,
-                     "time" = end - start,
-                     "warnings" = warnings)
+                      "params" = params,
+                      "sim" = out,
+                      "time" = end - start,
+                      "warnings" = warnings)
       warning("Increase maxK: all the provided distributional mixture components were used. Check '$warnings' to see when it happened.")
     }
     
     if((length(warnings$top_maxK)==0) & (length(warnings$top_maxL)>0)) {
       output <- list( "model" = "fiSAN",
-                     "params" = params,
-                     "sim" = out,
-                     "time" = end - start,
-                     "warnings" = warnings)
+                      "params" = params,
+                      "sim" = out,
+                      "time" = end - start,
+                      "warnings" = warnings)
       warning("Increase maxL: all the provided observational mixture components were used. Check '$warnings' to see when it happened.")
     }
   } else {
     output <- list( "model" = "fiSAN",
-                   "params" = params,
-                   "sim" = out,
-                   "time" = end - start )
+                    "params" = params,
+                    "sim" = out,
+                    "time" = end - start )
   }
   
   structure(output, class = c("SANmcmc", class(output)))

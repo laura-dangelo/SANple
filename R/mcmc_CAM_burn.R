@@ -5,7 +5,7 @@
 #' The implemented algorithm is based on the nested slice sampler of Denti et al. (2023), based on the algorithm of Kalli, Griffin and Walker (2011).
 #' 
 #' @usage 
-#' sample_CAM(nrep, y, group, 
+#' sample_CAM(nrep, burn, y, group, 
 #'            maxK = 50, maxL = 50, 
 #'            m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
 #'            hyp_alpha1 = 1, hyp_alpha2 = 1,
@@ -18,6 +18,7 @@
 #'            progress = TRUE, seed = NULL)
 #' 
 #' @param nrep Number of MCMC iterations.
+#' @param burn Number of discarded iterations.
 #' @param y Vector of observations.
 #' @param group Vector of the same length of y indicating the group membership (numeric).
 #' @param maxK Maximum number of distributional clusters (default = 50).
@@ -127,7 +128,7 @@
 #' g <- c(rep(1,30), rep(2, 30))
 #' plot(density(y[g==1]), xlim = c(-5,10))
 #' lines(density(y[g==2]), col = 2)
-#' out <- sample_CAM(nrep = 500, y = y, group = g,
+#' out <- sample_CAM(nrep = 500, burn = 200, y = y, group = g,
 #'                   nclus_start = 2,
 #'                   maxL = 20, maxK = 20)
 #' out 
@@ -143,7 +144,7 @@
 #' @export sample_CAM
 #'
 #' @importFrom stats cor var dist hclust cutree rgamma 
-sample_CAM = function(nrep, y, group, 
+sample_CAM = function(nrep, burn, y, group, 
                       maxK = 50, 
                       maxL = 50, 
                       m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
@@ -163,13 +164,13 @@ sample_CAM = function(nrep, y, group,
   set.seed(seed)
   
   params <- list(nrep = nrep, 
-                y = y,
-                group = group+1, 
-                maxK = maxK, 
-                maxL = maxL, 
-                m0 = m0, tau0 = tau0,
-                lambda0 = lambda0, gamma0 = gamma0,
-                seed = seed)
+                 y = y,
+                 group = group+1, 
+                 maxK = maxK, 
+                 maxL = maxL, 
+                 m0 = m0, tau0 = tau0,
+                 lambda0 = lambda0, gamma0 = gamma0,
+                 seed = seed)
   
   if(!is.null(alpha)) { params$alpha <- alpha }
   if(!is.null(beta)) { params$beta <- beta }
@@ -177,7 +178,7 @@ sample_CAM = function(nrep, y, group,
   if(is.null(alpha)) { params$hyp_alpha2 <- hyp_alpha2 }
   if(is.null(beta)) { params$hyp_beta1 <- hyp_beta1 }
   if(is.null(beta)) { params$hyp_beta2 <- hyp_beta2 }
-
+  
   if(is.null(S_start)) { S_start <- rep(0,length(unique(group))) }
   
   # if the initial cluster allocation is passed
@@ -207,9 +208,9 @@ sample_CAM = function(nrep, y, group,
     
     if(is.null(nclus_start)) { nclus_start = min(c(maxL, 30))}
     M_start <- stats::kmeans(y,
-                            centers = nclus_start, 
-                            algorithm="MacQueen",
-                            iter.max = 50)$cluster 
+                             centers = nclus_start, 
+                             algorithm="MacQueen",
+                             iter.max = 50)$cluster 
     
     # if the initial cluster allocation is not passed
     # and you want a warmstart
@@ -223,7 +224,7 @@ sample_CAM = function(nrep, y, group,
       sigma2_start[1:nclus_start][sigma2_start[1:nclus_start]==0] <- 0.001
       sigma2_start[is.na(sigma2_start)] <- 0.001
     }
-
+    
     # if the initial cluster allocation is not passed
     # and you don't want a warmstart
     if(!warmstart){
@@ -234,7 +235,7 @@ sample_CAM = function(nrep, y, group,
       sigma2_start[1] <- var(y)/2
     }
   }
- 
+  
   M_start <- M_start-1
   sigma2_start[is.na(sigma2_start)] <- 0.001
   
@@ -245,12 +246,16 @@ sample_CAM = function(nrep, y, group,
   fixed_alpha <- F
   fixed_beta <- F
   if(!is.null(alpha) ) {
-    fixed_alpha <- T } else { alpha <- 1 }
+    fixed_alpha <- T ; 
+    alpha_start <- alpha
+  } else { alpha <- 1 }
   if(!is.null(beta) ) {
-    fixed_beta <- T } else { beta <- 1}
+    beta_start <- beta
+    fixed_beta <- T ; 
+    eps_beta <- 1 } else { beta <- 1 }
   
   start = Sys.time()
-  out = sample_cam_arma(nrep, y, group, 
+  out = sample_cam_burn(nrep, burn, y, group, 
                         maxK, maxL, 
                         m0, tau0, 
                         lambda0, gamma0,
@@ -262,7 +267,7 @@ sample_CAM = function(nrep, y, group,
                         M_start, S_start,
                         alpha_start, beta_start,
                         progress
-                   )
+  )
   end = Sys.time()
   
   warnings <- out$warnings
@@ -273,34 +278,34 @@ sample_CAM = function(nrep, y, group,
   
   if(length(warnings) == 2) {
     output <- list( "model" = "CAM",
-                   "params" = params,
-                   "sim" = out,
-                   "time" = end - start,
-                   "warnings" = warnings)
+                    "params" = params,
+                    "sim" = out,
+                    "time" = end - start,
+                    "warnings" = warnings)
     warning("Increase maxL and maxK: all the provided mixture components were used. Check $warnings to see when it happened.")
   } else if (length(warnings) == 1) {
     if((length(warnings$top_maxK)>0) & (length(warnings$top_maxL)==0)) {
       output <- list( "model" = "CAM",
-                     "params" = params,
-                     "sim" = out,
-                     "time" = end - start,
-                     "warnings" = warnings)
+                      "params" = params,
+                      "sim" = out,
+                      "time" = end - start,
+                      "warnings" = warnings)
       warning("Increase maxK: all the provided distributional mixture components were used. Check '$warnings' to see when it happened.")
     }
     
     if((length(warnings$top_maxK)==0) & (length(warnings$top_maxL)>0)) {
       output <- list( "model" = "CAM",
-                     "params" = params,
-                     "sim" = out,
-                     "time" = end - start,
-                     "warnings" = warnings)
+                      "params" = params,
+                      "sim" = out,
+                      "time" = end - start,
+                      "warnings" = warnings)
       warning("Increase maxL: all the provided observational mixture components were used. Check '$warnings' to see when it happened.")
     }
   } else {
     output <- list( "model" = "CAM",
-                   "params" = params,
-                   "sim" = out,
-                   "time" = end - start )
+                    "params" = params,
+                    "sim" = out,
+                    "time" = end - start )
   }
   
   structure(output, class = c("SANmcmc",class(output)))

@@ -21,7 +21,8 @@
 #' set.seed(123)
 #' y <- c(rnorm(40,0,0.3), rnorm(20,5,0.3))
 #' g <- c(rep(1,30), rep(2, 30))
-#' out <- sample_fiSAN(nrep = 500, y = y, group = g, 
+#' out <- sample_fiSAN(nrep = 500, burn = 200, 
+#'                     y = y, group = g, 
 #'                     nclus_start = 2,
 #'                     maxK = 20, maxL = 20,
 #'                     beta = 1)
@@ -36,23 +37,24 @@
 plot.SANmcmc <- function(x,
                          type = c("boxplot", "ecdf", "scatter"),
                          estimated_clusters = NULL,
-                         burnin = NULL,
-                         palette_brewed = FALSE, ncores = 0, ...) 
+                         burnin = 0,
+                         palette_brewed = FALSE, ncores = 1, ...) 
 {
   type <- match.arg(type)
   
   if(!is.null(estimated_clusters)) { 
-    burnin <- 1:(x$params$nrep - nrow(attr(estimated_clusters$est_oc, "draws")))
     estimated_oc <- estimated_clusters$est_oc
     estimated_dc <- estimated_clusters$est_dc
-  } else {
-    if(is.null(burnin)) { burnin <- 1:round(x$params$nrep/3*2) 
-    } else { burnin <- 1:burnin }
-  }
-  
-  if(is.null(estimated_clusters)) { 
-    estimated_oc <- suppressWarnings(salso::salso(x$sim$obs_cluster[-burnin,], nCores = ncores)) 
-    estimated_dc <- suppressWarnings(salso::salso(x$sim$distr_cluster[-burnin,], nCores = ncores)) 
+  } else  if(is.null(estimated_clusters)) { 
+    if(burnin>0) { 
+      OC <- x$sim$obs_cluster[-burnin,] 
+      DC <- x$sim$distr_cluster[-burnin,]
+    }else{
+      OC <- x$sim$obs_cluster 
+      DC <- x$sim$distr_cluster
+    }
+    estimated_oc <- suppressWarnings(salso::salso(OC, nCores = ncores)) 
+    estimated_dc <- suppressWarnings(salso::salso(DC, nCores = ncores)) 
   }
   
   posterior_means <- tapply(x$params$y, estimated_oc, mean)
