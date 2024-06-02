@@ -41,6 +41,9 @@ This is a basic example which shows you how to solve a common problem:
 library(SANple)
 #> Loading required package: scales
 #> Loading required package: RColorBrewer
+```
+
+``` r
 
 ## basic example code
 set.seed(123)
@@ -53,7 +56,7 @@ lines(density(y[g==2]), col = "cyan4")
 <img src="man/figures/README-example-1.png" width="100%" />
 
 ``` r
-out <- sample_fiSAN(nrep = 3000, y = y, group = g, beta = 1)
+out <- sample_fiSAN(nrep = 3000, burn = 1000, y = y, group = g, beta = 1)
 out 
 #> 
 #> MCMC result of fiSAN model 
@@ -61,14 +64,17 @@ out
 #> Model estimated on 290 total observations and 2 groups 
 #> Total MCMC iterations: 3000 
 #> maxL: 50 - maxK: 50 
-#> Elapsed time: 1.773 secs
-clusters <- estimate_clusters(out, burnin = 2000)
+#> Elapsed time: 1.625 secs
+```
+
+``` r
+clusters <- estimate_clusters(out)
 clusters
 #> 
 #> Summary of the estimated observational and distributional clusters 
 #> 
 #> ----------------------------------
-#> Estimated number of observational clusters: 3 
+#> Estimated number of observational clusters: 4 
 #> Estimated number of distributional clusters: 2 
 #> ----------------------------------
 #> 
@@ -79,8 +85,11 @@ clusters
 #> 
 #> Distributional cluster 2 
 #>     post_mean  post_var
-#> 2 -0.00160923 0.7737203
-#> 3  5.03452815 0.8314760
+#> 3 -0.00160923 0.7737203
+#> 4  5.03452815 0.8314760
+```
+
+``` r
 plot(out, estimated_clusters = clusters)
 ```
 

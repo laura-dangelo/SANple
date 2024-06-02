@@ -19,20 +19,27 @@ In this release we
 0 errors | 0 warnings | 1 note
 
 ❯ checking CRAN incoming feasibility ... NOTE
-  Maintainer: ‘Laura D'Angelo <laura.dangelo@live.com>’
-  
-  Found the following (possibly) invalid DOIs:
-    DOI: 10.1080/01621459.2021.1933499
-      From: DESCRIPTION
-      Status: Forbidden
-      Message: 403
-      
-However, the links work when building the documentation.
+    Maintainer: ‘Francesco Denti <francescodenti.personal@gmail.com>’
+   
+   New maintainer:
+     Francesco Denti <francescodenti.personal@gmail.com>
+   Old maintainer(s):
+     Laura D'Angelo <laura.dangelo@live.com>
 
+due to a change in the maintainer of the package.
+      
 - Running `devtools::check_win_devel()` produces
 
-0 errors | 0 warnings | 0 note
+0 errors | 0 warnings | 1 note
 
+❯ checking CRAN incoming feasibility ... NOTE
+Maintainer: 'Francesco Denti <francescodenti.personal@gmail.com>'
+
+New maintainer:
+  Francesco Denti <francescodenti.personal@gmail.com>
+Old maintainer(s):
+  Laura D'Angelo <laura.dangelo@live.com>
+  
 - Finally, in its current state, this package also passes all the standard checks performed via *GitHub actions*.
 
 ## Downstream dependencies

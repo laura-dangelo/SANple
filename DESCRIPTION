@@ -2,16 +2,16 @@ Package: SANple
 Type: Package
 Title: Fitting Shared Atoms Nested Models via Markov Chains Monte Carlo
 Version: 0.1.1
-Date: 2024-05-15
+Date: 2024-06-02
 Authors@R: c(
-    person("Laura", "D'Angelo", ,"laura.dangelo@live.com", 
-    role = c("aut", "cre", "cph"),
-    comment = c(ORCID = "0000-0001-5034-7414")),
     person("Francesco", "Denti", ,"francescodenti.personal@gmail.com", 
-    role = c("aut"),
-    comment = c(ORCID = "0000-0003-2978-4702"))
+    role = c("aut","cre"),
+    comment = c(ORCID = "0000-0003-2978-4702")),
+    person("Laura", "D'Angelo", ,"laura.dangelo@live.com", 
+    role = c("aut", "cph"),
+    comment = c(ORCID = "0000-0001-5034-7414"))
   )
-Maintainer: Laura D'Angelo <laura.dangelo@live.com>
+Maintainer: Francesco Denti <francescodenti.personal@gmail.com>
 URL: https://github.com/laura-dangelo/SANple
 BugReports: https://github.com/laura-dangelo/SANple/issues
 Description: Estimate Bayesian nested mixture models via Markov Chain Monte Carlo methods. Specifically, the package implements the common atoms model (Denti et al., 2023), its finite version (D'Angelo et al., 2023), and a hybrid finite-infinite model. 

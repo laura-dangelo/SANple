@@ -17,11 +17,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Laura D'Angelo \email{laura.dangelo@live.com} (\href{https://orcid.org/0000-0001-5034-7414}{ORCID}) [copyright holder]
+\strong{Maintainer}: Francesco Denti \email{francescodenti.personal@gmail.com} (\href{https://orcid.org/0000-0003-2978-4702}{ORCID})
 
 Authors:
 \itemize{
-  \item Francesco Denti \email{francescodenti.personal@gmail.com} (\href{https://orcid.org/0000-0003-2978-4702}{ORCID})
+  \item Laura D'Angelo \email{laura.dangelo@live.com} (\href{https://orcid.org/0000-0001-5034-7414}{ORCID}) [copyright holder]
 }
 
 }
