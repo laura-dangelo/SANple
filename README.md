@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# SANple v0.1.1 <img src="man/figures/sanple_draft.png" align="right" width="120" />
+# SANple v0.1.1.9000 <img src="man/figures/sanple_draft.png" align="right" width="120" />
 
 <!-- badges: start -->
 
@@ -64,7 +64,7 @@ out
 #> Model estimated on 290 total observations and 2 groups 
 #> Total MCMC iterations: 3000 
 #> maxL: 50 - maxK: 50 
-#> Elapsed time: 1.625 secs
+#> Elapsed time: 1.555 secs
 ```
 
 ``` r

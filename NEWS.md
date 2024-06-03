@@ -1,3 +1,7 @@
+# SANple 0.1.1.9000
+
+* ...
+
 # SANple 0.1.1
 
 * Updated the MCMC functions to take a `burn in` value as input;
