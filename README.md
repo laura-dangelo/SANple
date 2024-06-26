@@ -64,7 +64,7 @@ out
 #> Model estimated on 290 total observations and 2 groups 
 #> Total MCMC iterations: 3000 
 #> maxL: 50 - maxK: 50 
-#> Elapsed time: 1.555 secs
+#> Elapsed time: 1.475 secs
 ```
 
 ``` r
@@ -103,7 +103,7 @@ imaging data. *Biometrics* 79(2), 1370–1382.
 
 D’Angelo, L., and Denti, F. (2024+). A finite-infinite shared atoms
 nested model for the Bayesian analysis of large grouped data sets.
-*Working paper*, 1–34
+[ArXiv preprint](https://arxiv.org/html/2406.13310v1)
 
 Denti, F., Camerlenghi, F., Guindani, M., Mira, A., 2023. A Common Atoms
 Model for the Bayesian Nonparametric Analysis of Nested Data. *Journal
