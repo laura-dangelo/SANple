@@ -11,7 +11,6 @@
 #' @seealso \code{\link{estimate_clusters}}, \code{\link{plot.SANmcmc}}
 #' 
 #' @export
-#' @useDynLib SANple
 print.SANmcmc <- function(x, ...)
 {
   cat("\n")

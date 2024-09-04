@@ -38,7 +38,6 @@
 #' @importFrom graphics par
 #' @importFrom grDevices devAskNewPage
 #' @export
-#' @useDynLib SANple
 traceplot <- function(object, params, 
                      show_density = TRUE,
                      show_burnin = TRUE,

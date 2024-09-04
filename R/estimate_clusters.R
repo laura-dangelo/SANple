@@ -28,7 +28,6 @@
 #'
 #' @export
 #' @importFrom salso salso
-#' @useDynLib SANple
 estimate_clusters <- function(object, burnin = 0, ncores = 0)
 {
   
