@@ -3,8 +3,8 @@
 #' @description Plot method for objects of class \code{SANmcmc}. 
 #' The function displays two graphs, meant to analyze the estimated distributional and observational clusters.
 #' 
-#' @param x object of class \code{SANmcmc} (the result of a call to \code{\link{sample_fiSAN}}, \code{\link{sample_fiSAN_sparsemix}}, 
-#' \code{\link{sample_fSAN}}, \code{\link{sample_fSAN_sparsemix}}, or \code{\link{sample_CAM}}).
+#' @param x object of class \code{SANmcmc} (the result of a call to \code{\link{sample_fiSAN}}, 
+#' \code{\link{sample_fSAN}}, or \code{\link{sample_CAM}}).
 #' @param type what type of plot should be drawn (only for the left-side plot). Possible types are "boxplot", "ecdf", and "scatter". 
 #' @param estimated_clusters the output of a call to \code{\link{estimate_clusters}} (optional). It can be used to speed up the function if the partition has already been computed. 
 #' If \code{estimated_clusters = NULL}, the displayed partition is computed using \code{\link{estimate_clusters}}.

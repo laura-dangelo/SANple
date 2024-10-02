@@ -2,8 +2,8 @@
 #' Estimate observational and distributional clusters
 #' @description Given the MCMC output, estimate the observational and distributional partitions using \code{\link[salso:salso]{salso::salso()}}.
 #'
-#' @param object object of class \code{SANmcmc} (the result of a call to \code{\link{sample_fiSAN}}, \code{\link{sample_fiSAN_sparsemix}}, 
-#' \code{\link{sample_fSAN}}, \code{\link{sample_fSAN_sparsemix}}, or \code{\link{sample_CAM}}).
+#' @param object object of class \code{SANmcmc} (the result of a call to \code{\link{sample_fiSAN}}, 
+#' \code{\link{sample_fSAN}}, or \code{\link{sample_CAM}}).
 #' @param burnin the length of the burn-in to be discarded before estimating the clusters (default is 2/3 of the iterations).
 #' @param ncores the number of CPU cores to use, i.e., the number of simultaneous runs at any given time. A value of zero indicates to use all cores on the system.
 #'

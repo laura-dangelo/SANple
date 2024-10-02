@@ -1,11 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# SANple v0.1.1.9000 <img src="man/figures/sanple_draft.png" align="right" width="120" />
+# SANple v0.2.0 <img src="man/figures/sanple_draft.png" align="right" width="120" />
 
-<!-- badges: start -->
-
+<!-- badges: start
 [![R-CMD-check](https://github.com/laura-dangelo/SANple/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/laura-dangelo/SANple/actions/workflows/R-CMD-check.yaml)
+-->
+
 [![CRAN](https://www.r-pkg.org/badges/version/SANple)](https://cran.r-project.org/package=SANple)
 [![Last
 Commit](https://img.shields.io/github/last-commit/laura-dangelo/SANple)](https://github.com/laura-dangelo/SANple)
@@ -17,11 +18,11 @@ Commit](https://img.shields.io/github/last-commit/laura-dangelo/SANple)](https:/
 
 The goal of SANple is to estimate Bayesian nested mixture models via
 MCMC methods. Specifically, the package implements the common atoms
-model (Denti et al., 2023), its finite version (D’Angelo et al., 2023),
-and a hybrid finite-infinite model (D’Angelo and Denti, 2024+). All
-models use Gaussian mixtures with a normal-inverse-gamma prior
-distribution on the parameters. Additional functions are provided to
-help analyzing the results of the fitting procedure.
+model (Denti et al., 2023), hybrid finite-infinite models (D’Angelo and
+Denti, 2024). All models use Gaussian mixtures with a
+normal-inverse-gamma prior distribution on the parameters. Additional
+functions are provided to help analyzing the results of the fitting
+procedure.
 
 ## Installation
 
@@ -41,9 +42,6 @@ This is a basic example which shows you how to solve a common problem:
 library(SANple)
 #> Loading required package: scales
 #> Loading required package: RColorBrewer
-```
-
-``` r
 
 ## basic example code
 set.seed(123)
@@ -64,10 +62,7 @@ out
 #> Model estimated on 290 total observations and 2 groups 
 #> Total MCMC iterations: 3000 
 #> maxL: 50 - maxK: 50 
-#> Elapsed time: 1.475 secs
-```
-
-``` r
+#> Elapsed time: 1.453 secs
 clusters <- estimate_clusters(out)
 clusters
 #> 
@@ -87,9 +82,6 @@ clusters
 #>     post_mean  post_var
 #> 3 -0.00160923 0.7737203
 #> 4  5.03452815 0.8314760
-```
-
-``` r
 plot(out, estimated_clusters = clusters)
 ```
 
@@ -97,13 +89,9 @@ plot(out, estimated_clusters = clusters)
 
 # References
 
-D’Angelo, L., Canale, A., Yu, Z., Guindani, M. (2023). Bayesian
-nonparametric analysis for the detection of spikes in noisy calcium
-imaging data. *Biometrics* 79(2), 1370–1382.
-
-D’Angelo, L., and Denti, F. (2024+). A finite-infinite shared atoms
-nested model for the Bayesian analysis of large grouped data sets.
-[ArXiv preprint](https://arxiv.org/html/2406.13310v1)
+D’Angelo, L., and Denti, F. (2024). A Finite-Infinite Shared Atoms
+Nested Model for the Bayesian Analysis of Large Grouped Data Sets.
+*Bayesian Analysis*
 
 Denti, F., Camerlenghi, F., Guindani, M., Mira, A., 2023. A Common Atoms
 Model for the Bayesian Nonparametric Analysis of Nested Data. *Journal

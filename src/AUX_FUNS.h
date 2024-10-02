@@ -1,5 +1,5 @@
-#ifndef COMMONFUNCTIONS_H
-#define COMMONFUNCTIONS_H
+#ifndef AUX_FUNS
+#define AUX_FUNS
 
 #include <RcppArmadillo.h>
 
@@ -14,6 +14,12 @@ Rcpp::List sample_model_parameters(const arma::vec& y,
                                    int maxL,
                                    double m0, double tau0,
                                    double lambda0, double gamma0) ;
+
+double fun_xi(double kappa, int i) ;
+
+int compute_trunc(double u_min, double kappa) ;
+
+arma::vec stick_breaking(arma::vec beta_var);
 
 #endif
 

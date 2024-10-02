@@ -13,7 +13,7 @@ traceplot(object, params,
 }
 \arguments{
 \item{object}{object of class \code{SANmcmc} (the result of a call to \code{\link{sample_fiSAN}}, 
-\code{\link{sample_fiSAN_sparsemix}}, \code{\link{sample_fSAN}}, \code{\link{sample_fSAN_sparsemix}}, or \code{\link{sample_CAM}}).}
+\code{\link{sample_fSAN}}, or \code{\link{sample_CAM}}).}
 
 \item{params}{vector of strings with the names of the parameters to check.}
 

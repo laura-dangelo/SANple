@@ -15,8 +15,8 @@
 )
 }
 \arguments{
-\item{x}{object of class \code{SANmcmc} (the result of a call to \code{\link{sample_fiSAN}}, \code{\link{sample_fiSAN_sparsemix}}, 
-\code{\link{sample_fSAN}}, \code{\link{sample_fSAN_sparsemix}}, or \code{\link{sample_CAM}}).}
+\item{x}{object of class \code{SANmcmc} (the result of a call to \code{\link{sample_fiSAN}}, 
+\code{\link{sample_fSAN}}, or \code{\link{sample_CAM}}).}
 
 \item{type}{what type of plot should be drawn (only for the left-side plot). Possible types are "boxplot", "ecdf", and "scatter".}
 

@@ -1,6 +1,6 @@
 // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
 
-#include "common_functions.h"
+#include "AUX_FUNS.h"
 //[[Rcpp::depends(RcppArmadillo)]]
 #include <RcppArmadilloExtensions/sample.h>
 
@@ -23,6 +23,8 @@ arma::vec rdirichlet(arma::vec par)
   }
   return(out) ;
 }
+
+//---------------------------------------------------------
 
 arma::vec relabel_arma(arma::vec cluster) 
 {
@@ -47,6 +49,8 @@ arma::vec relabel_arma(arma::vec cluster)
 }
 
 
+//---------------------------------------------------------
+
 // sample fun
 int sample_i(arma::vec ids, arma::vec prob)
 {
@@ -55,7 +59,7 @@ int sample_i(arma::vec ids, arma::vec prob)
   return(out) ;
 }
 
-
+//---------------------------------------------------------
 
 
 // update model parameters <--- change if different likelihood
@@ -98,4 +102,38 @@ Rcpp::List sample_model_parameters(const arma::vec& y,
   
   return Rcpp::List::create(Rcpp::Named("out_mu") = out_mu,
                             Rcpp::Named("out_sigma2") = out_sigma2);
+}
+
+// Compute slice coefficients
+// We use a deterministic sequence as in Denti et al. (2021)
+// See Sec. C1 of the Supplementary Material for details
+double fun_xi(double kappa, int i)
+{
+  double out = log(1-kappa) + (i-1) * log(kappa) ;
+  return(exp(out)) ;
+}
+
+// Truncating threshold of the slice sampler
+// See Sec. C1 of the Supplementary Material of Denti et al. (2021) for details
+int compute_trunc(double u_min, double kappa)
+{
+  int out ;
+  out = floor( (log(u_min) - log(1 - kappa)) / log(kappa) ) ;
+  return(out) ;
+}
+
+
+// Compute stick-breaking weights starting from the vector of beta r.v. Beta(a_k,b_k)
+// Sethuraman (1994) construction
+arma::vec stick_breaking(arma::vec beta_var)
+{
+  int len = beta_var.n_elem ;
+  arma::vec out(len) ;
+  out(0) = beta_var(0) ;
+  arma::vec cs_log_one_m_beta = arma::cumsum(log(1.0-beta_var));
+  for(int k = 1; k < len; k++)
+  {
+    out(k) = exp( log(beta_var(k)) + cs_log_one_m_beta(k-1)) ;
+  }
+  return(out) ;
 }

@@ -1,6 +1,8 @@
-# SANple 0.1.1.9000
+# SANple 0.2.1
 
-* ...
+* Major update of function names (C++ level) to uinform with accepted paper
+* Removed fCAM model and its hybrid version (random concentration parameters)
+
 
 # SANple 0.1.1
 

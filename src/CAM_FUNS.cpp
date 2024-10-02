@@ -1,57 +1,8 @@
-#include "funs_cam.h"
-
-// Compute slice coefficients
-// We use a deterministic sequence as in Denti et al. (2021)
-// See Sec. C1 of the Supplementary Material for details
-double fun_xi(double kappa, int i)
-{
-  double out = log(1-kappa) + (i-1) * log(kappa) ;
-  return(exp(out)) ;
-}
-
-// Truncating threshold of the slice sampler
-// See Sec. C1 of the Supplementary Material of Denti et al. (2021) for details
-int compute_trunc(double u_min, double kappa)
-{
-  int out ;
-  out = floor( (log(u_min) - log(1 - kappa)) / log(kappa) ) ;
-  return(out) ;
-}
+#include "CAM_FUNS.h"
 
 
-// Compute stick-breaking weights starting from the vector of beta r.v. Beta(a_k,b_k)
-// Sethuraman (1994) construction
-arma::vec stick_breaking(arma::vec beta_var)
-{
-  int len = beta_var.n_elem ;
-  arma::vec out(len) ;
-  out(0) = beta_var(0) ;
-  arma::vec cs_log_one_m_beta = arma::cumsum(log(1.0-beta_var));
-  for(int k = 1; k < len; k++)
-  {
-    out(k) = exp( log(beta_var(k)) + cs_log_one_m_beta(k-1)) ;
-  }
-  return(out) ;
-}
- 
-/* older version - to be removed
-arma::vec stick_breaking(arma::vec beta_var)
-{
-  int len = beta_var.n_elem ;
-  arma::vec out(len) ;
-  
-  out(0) = beta_var(0) ;
-  for(int k = 1; k < len; k++)
-  {
-    arma::vec tmp(k) ;
-    for(int t = 0; t < k; t++) { tmp(t) = log(1 - beta_var(t)) ; }
-    double tmp1 = arma::accu(tmp) ;
-    if(!arma::is_finite(tmp1)) { tmp1 = log(0) ;}
-    out(k) = exp(log(beta_var(k)) + tmp1) ;
-  }
-  return(out) ;
-}
- */
+
+
 
 
 // This function performs steps 1-4 of Algorithm 1 of Denti et al. (2021):
@@ -193,11 +144,7 @@ arma::vec slicedDP_sample_distr_cluster(const arma::vec& group,
   arma::vec probD(maxK_iter) ;
   arma::vec out(G) ;
   double sumdens ;
-  //Rcpp::Rcout<< omega;
-  //Rcpp::Rcout<< "\n-----\n";  
-  //Rcpp::Rcout<< M_iter;
-  
-  
+
   // S_j is categorical, with Pr( S_j = k | - ) = I(u_j < xi_k) pi_k/xi_k * ( om_1k^#(M_ij = 1) ... om_Lk^#(M_ij = L) )
   // hence the log is:  log(pi_k) - log(xi_k) + sum_l  #(M_ij = l) * log( om_lk )
   for(int j = 0; j < G; j++)
@@ -215,53 +162,6 @@ arma::vec slicedDP_sample_distr_cluster(const arma::vec& group,
     double tmp = max(probD) ;
     for(int k = 0; k < maxK_iter; k++) {  probD(k) = probD(k) - tmp ; }
     probD = exp(probD) ;
-    out(j) = sample_i(distr_cluster_id, probD) ;
-  }
-  
-  return(out) ;
-}
-
-// This function performs step 5 of Algorithm 1 of Denti et al. (2021):
-// sample distributional cluster allocation S_j
-arma::vec slicedDP_sample_distr_cluster2(const arma::vec& group,
-                                        arma::vec M_iter,
-                                        arma::vec pi, arma::mat omega,
-                                        arma::vec u_D,
-                                        arma::vec xi,
-                                        int maxK_iter)
-{
-  
-  arma::vec unique_groups = arma::unique(group) ;
-  int G = unique_groups.n_elem ;
-  
-  arma::vec distr_cluster_id = arma::linspace(0, maxK_iter-1, maxK_iter) ;
-  arma::vec probD(maxK_iter) ;
-  arma::vec out(G) ;
-  double sumdens ;
-  // S_j is categorical, with Pr( S_j = k | - ) = I(u_j < xi_k) pi_k/xi_k * ( om_1k^#(M_ij = 1) ... om_Lk^#(M_ij = L) )
-  // hence the log is:  log(pi_k) - log(xi_k) + sum_l  #(M_ij = l) * log( om_lk )
-  for(int j = 0; j < G; j++)
-  {
-    arma::uvec ind_group_j = find(group == j) ;  // restrict to observations in the j-th population
-    arma::vec mixdens(ind_group_j.n_elem) ;
-    probD.zeros();
-    for(int k = 0; k < maxK_iter; k++)  // I have to compute the prob for each k = 1,..., K_iter
-    {
-      for(unsigned int i = 0; i < ind_group_j.n_elem; i++) { mixdens(i) = log( omega(M_iter(ind_group_j(i)), k) ) ; }
-      sumdens = arma::accu(mixdens) ;
-      if(!arma::is_finite(sumdens)) { sumdens = log(0) ;}
-      probD(k) =  log( pi(k) ) - log( xi(k) ) + sumdens + log(u_D(j) < xi(k));
-    }
-    double tmp = max(probD) ;
-    // sanity check
-    arma::uvec check = find( (probD) == -arma::datum::inf );
-    int cne = check.n_elem;
-    if(cne==maxK_iter){
-      Rcpp::Rcout<<"*";
-      probD.fill(1.0/maxK_iter);
-    }else{
-      probD = exp(probD - tmp) ;  // removed useless for loop
-    }
     out(j) = sample_i(distr_cluster_id, probD) ;
   }
   

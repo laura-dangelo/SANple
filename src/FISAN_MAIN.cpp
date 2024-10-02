@@ -1,16 +1,11 @@
-#include <RcppArmadillo.h>
-#include "funs_overcam.h"
-#include "funs_cam.h"
-#include "funs_fcam.h"
-#include "funs_ficam.h"
-#include "funs_san.h"
-
+#include "SAN_FUNS.h"
+#include "CAM_FUNS.h"
 // [[Rcpp::depends(RcppProgress)]]
 #include <progress.hpp>
 #include <progress_bar.hpp>
 
 // [[Rcpp::export]]
-Rcpp::List sample_overficam_burn(int nrep, // number of replications of the Gibbs sampler
+Rcpp::List sample_fiSAN_cpp(int nrep, // number of replications of the Gibbs sampler
                                  int burn,
                                  const arma::vec & y, // input data
                                  const arma::vec & group, // group assignment for each observation in the vector y
@@ -18,16 +13,13 @@ Rcpp::List sample_overficam_burn(int nrep, // number of replications of the Gibb
                                  int maxL, // maximum number of observational clusters
                                  double m0, double tau0, // hyperparameters on the N-iG prior on the mean parameter, mu|sigma2 ~ N(m0, sigma2 / tau0)
                                  double lambda0, double gamma0, // hyperparameters on the N-iG prior on the variance parameter, 1/sigma2 ~ Gamma(lambda0, gamma0)
-                                 bool fixed_alpha, bool fixed_beta, // do you want fixed alpha or beta?
                                  double alpha, double beta, // Dirichlet parameters if fixed
                                  double hyp_alpha1, double hyp_alpha2, // hyperparameters of alpha ( par of the distributional DP )
-                                 double hyp_beta, // hyperparameter of the Gamma prior for the observational Dirichlet
+                                 bool fixed_alpha,
                                  arma::vec mu_start, // starting point
                                  arma::vec sigma2_start,
                                  arma::vec M_start,
                                  arma::vec S_start,
-                                 double alpha_start, double beta_start,
-                                 double eps_beta, // MH step on beta
                                  bool progressbar
 )
 {
@@ -65,20 +57,11 @@ Rcpp::List sample_overficam_burn(int nrep, // number of replications of the Gibb
   double current_beta = 0;
   double current_alpha = 0;
   
-  if(fixed_alpha) { 
     out_alpha.fill(alpha) ; 
-    current_alpha = alpha_start ;
-  } else {
-    current_alpha = alpha_start ;
-  }
-  
-  if(fixed_beta) { 
+    current_alpha = alpha ;
     out_beta.fill(beta) ; 
-    current_beta = beta_start;
-  } else {
-    current_beta = beta_start ;
-  }
-  
+    current_beta = beta;
+
   arma::vec clusterD_long(N) ;
   for(int i = 0; i < N; i++) { clusterD_long(i) = current_S( group(i)) ; }
   arma::vec xi(maxK) ;
@@ -104,7 +87,7 @@ Rcpp::List sample_overficam_burn(int nrep, // number of replications of the Gibb
     */
       
       
-      weights_slice_sampler = ficam_weights_update_slice_sampler(group,
+      weights_slice_sampler = fisan_weights_update_slice_sampler(group,
                                                                  current_S,
                                                                  current_alpha,
                                                                  xi,
@@ -183,13 +166,7 @@ Rcpp::List sample_overficam_burn(int nrep, // number of replications of the Gibb
                                      hyp_alpha1, hyp_alpha2,
                                      G, current_S) ;
       }
-      
-    /* sample beta */
-      if(!fixed_beta) {
-        current_beta = overcam_MH_beta(current_beta, eps_beta, 
-                                       current_omega, hyp_beta) ;
-      }
-      
+
 
     /*---------------------------------------------*/
       

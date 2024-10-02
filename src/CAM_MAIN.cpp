@@ -1,11 +1,10 @@
-#include <RcppArmadillo.h>
-#include "funs_cam.h"
+#include "CAM_FUNS.h"
 // [[Rcpp::depends(RcppProgress)]]
 #include <progress.hpp>
 #include <progress_bar.hpp>
 
 // [[Rcpp::export]]
-Rcpp::List sample_cam_burn(int nrep, // number of replications of the Gibbs sampler
+Rcpp::List sample_CAM_cpp(int nrep, // number of replications of the Gibbs sampler
                            int burn,
                            const arma::vec & y, // input data
                            const arma::vec & group, // group assignment for each observation in the vector y

@@ -7,8 +7,8 @@
 estimate_clusters(object, burnin = 0, ncores = 0)
 }
 \arguments{
-\item{object}{object of class \code{SANmcmc} (the result of a call to \code{\link{sample_fiSAN}}, \code{\link{sample_fiSAN_sparsemix}}, 
-\code{\link{sample_fSAN}}, \code{\link{sample_fSAN_sparsemix}}, or \code{\link{sample_CAM}}).}
+\item{object}{object of class \code{SANmcmc} (the result of a call to \code{\link{sample_fiSAN}}, 
+\code{\link{sample_fSAN}}, or \code{\link{sample_CAM}}).}
 
 \item{burnin}{the length of the burn-in to be discarded before estimating the clusters (default is 2/3 of the iterations).}
 

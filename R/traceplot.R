@@ -11,7 +11,7 @@
 #'           trunc_plot = 10)
 #'
 #' @param object object of class \code{SANmcmc} (the result of a call to \code{\link{sample_fiSAN}}, 
-#' \code{\link{sample_fiSAN_sparsemix}}, \code{\link{sample_fSAN}}, \code{\link{sample_fSAN_sparsemix}}, or \code{\link{sample_CAM}}).
+#' \code{\link{sample_fSAN}}, or \code{\link{sample_CAM}}).
 #' @param params vector of strings with the names of the parameters to check.
 #' @param show_burnin logical (default \code{TRUE}). Whether the first part of the chains should be plotted in the traceplots.
 #' @param show_density  logical (default \code{TRUE}). Whether a kernel estimate of the density should be plotted. The burn-in is always discarded.

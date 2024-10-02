@@ -1,11 +1,10 @@
-#include <RcppArmadillo.h>
-#include "funs_overcam.h"
+#include "SAN_FUNS.h"
 // [[Rcpp::depends(RcppProgress)]]
 #include <progress.hpp>
 #include <progress_bar.hpp>
 
 // [[Rcpp::export]]
-Rcpp::List sample_overcam_burn(int nrep, // number of replications of the Gibbs sampler
+Rcpp::List sample_fSAN_cpp(int nrep, // number of replications of the Gibbs sampler
                                int burn,
                                const arma::vec & y, // input data
                                const arma::vec & group, // group assignment for each observation in the vector y
@@ -13,18 +12,11 @@ Rcpp::List sample_overcam_burn(int nrep, // number of replications of the Gibbs 
                                int maxL, // maximum number of observational clusters  
                                double m0, double tau0, // hyperparameters on the N-iG prior on the mean parameter, mu|sigma2 ~ N(m0, sigma2 / tau0)
                                double lambda0, double gamma0, // hyperparameters on the N-iG prior on the variance parameter, 1/sigma2 ~ Gamma(lambda0, gamma0)
-                               bool fixed_alpha, bool fixed_beta, // do you want fixed alpha or beta?
                                double alpha, double beta, // Dirichlet parameters if fixed
-                               double hyp_alpha, // hyperparameter of the Gamma prior for the distributional Dirichlet
-                               double hyp_beta, // hyperparameter of the Gamma prior for the observational Dirichlet
                                arma::vec mu_start, // starting point 
                                arma::vec sigma2_start,
                                arma::vec M_start,
                                arma::vec S_start,
-                               double alpha_start,
-                               double beta_start,
-                               double eps_alpha, // MH step on alpha
-                               double eps_beta, // MH step on beta
                                bool progressbar
 ) 
 {
@@ -59,20 +51,12 @@ Rcpp::List sample_overcam_burn(int nrep, // number of replications of the Gibbs 
   double current_beta = 0;
   double current_alpha = 0;
   
-  if(fixed_alpha) { 
     out_alpha.fill(alpha) ; 
-    current_alpha = alpha_start ;
-  } else {
-    current_alpha = alpha_start ;
-  }
-  
-  if(fixed_beta) { 
+    current_alpha = alpha;
+
     out_beta.fill(beta) ; 
-    current_beta = beta_start;
-  } else {
-    current_beta = beta_start ;
-  }
-  
+    current_beta = beta;
+
   
   
   // auxiliary quantities
@@ -150,25 +134,6 @@ Rcpp::List sample_overcam_burn(int nrep, // number of replications of the Gibbs 
     arma::vec tmp_sigma2 = out_params["out_sigma2"] ;
     current_sigma2 = tmp_sigma2 ; 
     
-    /*---------------------------------------------*/
-    
-    
-    /*---------------------------------------------*/
-    /*
-     *  UPDATE DIRICHLET HYPER-PARAMETERS 
-     */
-    /* sample alpha */
-    if(!fixed_alpha) {
-      current_alpha = overcam_MH_alpha(current_alpha, 
-                                       eps_alpha, 
-                                       current_pi, hyp_alpha) ;
-    }
-    
-    /* sample beta */
-    if(!fixed_beta) {
-      current_beta = overcam_MH_beta(current_beta, eps_beta, 
-                                     current_omega, hyp_beta) ;
-    }
     /*---------------------------------------------*/
     
     // saving
