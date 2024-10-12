@@ -16,13 +16,13 @@ sample_fiSAN(nrep, burn, y, group,
               progress = TRUE, seed = NULL)
 }
 \arguments{
-\item{nrep}{Number of MCMC iterations.}
-
-\item{burn}{Number of discarded iterations.}
-
 \item{y}{Vector of observations.}
 
 \item{group}{Vector of the same length of y indicating the group membership (numeric).}
+
+\item{nrep}{Number of MCMC iterations.}
+
+\item{burn}{Number of discarded iterations.}
 
 \item{maxK}{Maximum number of distributional clusters \eqn{K} (default = 50).}
 
@@ -139,10 +139,7 @@ y <- c(rnorm(40,0,0.3), rnorm(20,5,0.3))
 g <- c(rep(1,30), rep(2, 30))
 plot(density(y[g==1]), xlim = c(-5,10))
 lines(density(y[g==2]), col = 2)
-out <- sample_fiSAN(nrep = 500, burn = 200, y = y, group = g, 
-                              nclus_start = 2,
-                              maxK = 20, maxL = 20,
-                              beta = 0.01)
+out <- sample_fiSAN(y = y, group = g)
 out 
 
 }

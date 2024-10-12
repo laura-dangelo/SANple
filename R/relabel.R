@@ -1,7 +1,7 @@
 #' Relabel clusters 
 #' @keywords internal
 #' @param ix vector of cluster labels
-.relabell <- function(ix) 
+.relabel <- function(ix) 
 {
   if(min(ix)==0) ix <- ix+1
   while( max(ix) != length(unique(ix)) )

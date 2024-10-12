@@ -1,16 +1,7 @@
-
-#' Traceplot: plot MCMC chains
-#' @description Check the convergence of the MCMC through visual inspection of the chains.
-#' 
-#' @usage 
-#' traceplot(object, params, 
-#'           show_density = TRUE, 
-#'           show_burnin = TRUE, 
-#'           length_burnin = NULL, 
-#'           show_convergence = TRUE, 
-#'           trunc_plot = 10)
+#' Plotting MCMC output
+#' @description Plot method for objects of class \code{SANmcmc}. Check the convergence of the MCMC through visual inspection of the chains.
 #'
-#' @param object object of class \code{SANmcmc} (the result of a call to \code{\link{sample_fiSAN}}, 
+#' @param x object of class \code{SANmcmc} (the result of a call to \code{\link{sample_fiSAN}}, 
 #' \code{\link{sample_fSAN}}, or \code{\link{sample_CAM}}).
 #' @param params vector of strings with the names of the parameters to check.
 #' @param show_burnin logical (default \code{TRUE}). Whether the first part of the chains should be plotted in the traceplots.
@@ -18,45 +9,41 @@
 #' @param length_burnin if \code{show_burnin = FALSE}, the length of the burn-in to be discarded.
 #' @param show_convergence logical (default \code{TRUE}). Whether a superimposed red line of the cumulative mean should be plotted.
 #' @param trunc_plot integer (default = 10). For multidimensional parameters, the maximum number of components to be plotted.
-#' 
+#' @param ... ignored
 #' @note The function is not available for the observational weights \eqn{\omega}.
 #' 
 #' @return The function displays the traceplots of the MCMC algorithm.
-#' 
+#' #' 
 #' @examples 
 #' set.seed(123)
 #' y <- c(rnorm(40,0,0.3), rnorm(20,5,0.3))
 #' g <- c(rep(1,30), rep(2, 30))
-#' out <- sample_fiSAN(nrep = 500, burn = 200, 
-#'                     y = y, group = g, 
-#'                     nclus_start = 2,
-#'                     maxK = 20, maxL = 20,
-#'                     beta = 1)
-#' traceplot(out, params = c("mu", "sigma2"), trunc_plot = 2)
+#' out <- sample_fiSAN(y = y, group = g)
+#' plot(out, params = c("mu", "sigma2"), trunc_plot = 2)
 #' 
 #' 
 #' @importFrom graphics par
 #' @importFrom grDevices devAskNewPage
 #' @export
-traceplot <- function(object, params, 
-                     show_density = TRUE,
-                     show_burnin = TRUE,
-                     length_burnin = NULL,
-                     show_convergence = TRUE,
-                     trunc_plot = 10)
+plot.SANmcmc <- function(x, params, 
+                         show_density = TRUE,
+                         show_burnin = TRUE,
+                         length_burnin = NULL,
+                         show_convergence = TRUE,
+                         trunc_plot = 2, ...)
 {
   
   oldpar <- par(no.readonly = TRUE) 
   on.exit(par(oldpar)) 
 
   if(show_density){
-    .traces_and_density(object$sim, params, 
+    .traces_and_density(x$sim, params, 
             show_burnin,
             length_burnin,
             show_convergence,
             trunc_plot)
   } else {
-    .traces(object$sim, params, 
+    .traces(x$sim, params, 
             show_burnin,
             length_burnin,
             show_convergence,

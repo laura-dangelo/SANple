@@ -5,14 +5,7 @@
 #' 
 #' 
 #' @usage 
-#' sample_fSAN(nrep, burn, y, group, 
-#'                maxK = 50, maxL = 50, 
-#'                m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
-#'                alpha = NULL, beta = NULL,
-#'                warmstart = TRUE, nclus_start = NULL,
-#'                mu_start = NULL, sigma2_start = NULL, 
-#'                M_start = NULL, S_start = NULL,
-#'                progress = TRUE, seed = NULL)
+#' sample_fSAN(y, group, ...)
 #' 
 #' 
 #' @param nrep Number of MCMC iterations.
@@ -114,10 +107,7 @@
 #' g <- c(rep(1,30), rep(2, 30))
 #' plot(density(y[g==1]), xlim = c(-5,10))
 #' lines(density(y[g==2]), col = 2)
-#' out <- sample_fSAN(nrep = 500, burn = 200, y = y, group = g, 
-#'                              nclus_start = 2,
-#'                              maxK = 20, maxL = 20,
-#'                              alpha = 0.01, beta = 0.01)
+#' out <- sample_fSAN(y = y, group = g)
 #' out 
 #' 
 #' @references D’Angelo, L., Canale, A., Yu, Z., and Guindani, M. (2023). 
@@ -128,45 +118,66 @@
 #'
 #' @export sample_fSAN
 #' @importFrom stats cor var dist hclust cutree rgamma 
-sample_fSAN <- function(nrep, burn, y, group, 
-                        maxK = 50, maxL = 50, 
-                        m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
-                        alpha = NULL, beta = NULL,
-                        warmstart = TRUE, nclus_start = NULL,
-                        mu_start = NULL, sigma2_start = NULL, 
-                        M_start = NULL, S_start = NULL,
-                        progress = TRUE,
-                        seed = NULL)
+sample_fSAN <- function(y, group, 
+                        prior_param = list(
+                                           m0 = 0, 
+                                           tau0 = 0.1, 
+                                           lambda0 = 3, 
+                                           gamma0 = 2,
+                                           alpha = NULL, beta = NULL),
+                        model_param = list(
+                                           nrep = 1000, burn = 500, 
+                                           maxK = 50, maxL = 50, 
+                                           warmstart = TRUE, nclus_start = NULL,
+                                           mu_start = NULL, sigma2_start = NULL, 
+                                           M_start = NULL, S_start = NULL,
+                                           progress = TRUE,
+                                           seed = NULL) )
 {
-  group <- .relabell(group) - 1 
+  group <- .relabel(group) - 1 
   
-  if(is.null(seed)){seed <- round(stats::runif(1,1,10000))}
-  set.seed(seed)
+  if(is.null(model_param$seed)){model_param$seed <- round(stats::runif(1,1,10000))}
+  set.seed(model_param$seed)
   
-  params <- list(nrep = nrep, 
+  #----------------------------------------------------
+  warmstart = model_param$warmstart
+  nclus_start = model_param$nclus_start 
+  mu_start = model_param$mu_start
+  sigma2_start = model_param$sigma2_start
+  M_start = model_param$M_start
+  S_start = model_param$S_start
+  progress = model_param$progress
+  seed = model_param$seed         
+  #----------------------------------------------------
+  
+  params <- list(nrep = model_param$nrep, 
+                 burn = model_param$burn,
                  y = y,
                  group = group+1, 
-                 maxK = maxK, 
-                 maxL = maxL, 
-                 m0 = m0, tau0 = tau0,
-                 lambda0 = lambda0, gamma0 = gamma0,
+                 Nj = tapply(y,group, length),
+                 maxK = model_param$maxK, 
+                 maxL = model_param$maxL, 
+                 m0 =      prior_param$m0, 
+                 tau0 =    prior_param$tau0,
+                 lambda0 = prior_param$lambda0, 
+                 gamma0 =  prior_param$gamma0,
                  seed = seed)
   
-  if(!is.null(alpha)) { params$alpha <- alpha }
-  if(!is.null(beta)) { params$beta <- beta }
+  if(!is.null(prior_param$alpha)) { params$alpha <- prior_param$alpha }
+  if(!is.null(prior_param$beta)) { params$beta <- prior_param$beta }
 
   if(is.null(S_start)) { S_start <- rep(0,length(unique(group))) }
   
   # if the initial cluster allocation is passed
   if(!is.null(M_start)) { 
     warmstart <- FALSE
-    M_start <- .relabell(M_start)
+    M_start <- .relabel(M_start)
     
     # and the mean is passed or the variance is passed don't do anything
     
     # if the mean is not passed
     if(is.null(mu_start)) { 
-      mu_start <- rep(0,maxL)
+      mu_start <- rep(0,model_param$maxL)
       ncl0 <- length(unique(M_start))
       for(l in unique(M_start)) {
         mu_start[l] <- mean(y[M_start == l])
@@ -174,7 +185,7 @@ sample_fSAN <- function(nrep, burn, y, group,
     }
     # if the variance is not passed
     if(is.null(sigma2_start)) { 
-      sigma2_start <- rep(0.001,maxL)
+      sigma2_start <- rep(0.001,model_param$maxL)
       ncl0 <- length(unique(M_start))
       for(l in unique(M_start)) {
         sigma2_start[l] <- var(y[M_start == l])
@@ -185,19 +196,19 @@ sample_fSAN <- function(nrep, burn, y, group,
     # and you don't want a warmstart
     if(!warmstart){
       M_start <- rep(1, length(y))#sample(0:(maxL-2), length(y), replace = TRUE)
-      mu_start <- rep(0, maxL)
+      mu_start <- rep(0, model_param$maxL)
       mu_start[1] <- mean(y)
-      sigma2_start <- rep(0.001, maxL)
+      sigma2_start <- rep(0.001, model_param$maxL)
       sigma2_start[1] <- var(y)/2
     }
     
     # if the initial cluster allocation is not passed
     # and you want a warmstart
     if(warmstart){
-      mu_start <- rep(0,maxL)
-      sigma2_start <- rep(0.001,maxL)
+      mu_start <- rep(0,model_param$maxL)
+      sigma2_start <- rep(0.001,model_param$maxL)
       
-      if(is.null(nclus_start)) { nclus_start <- min(c(maxL, 30))}
+      if(is.null(nclus_start)) { nclus_start <- min(c(model_param$maxL, 30))}
       M_start <- stats::kmeans(y,
                                centers = nclus_start, 
                                algorithm="MacQueen",
@@ -213,25 +224,34 @@ sample_fSAN <- function(nrep, burn, y, group,
   M_start <- M_start-1
   sigma2_start[is.na(sigma2_start)] <- 0.001
   
-  if(!is.null(alpha) ) {
+  if(!is.null(prior_param$alpha) ) {
     fixed_alpha <- T ; 
-    alpha_start <- alpha
+    alpha_start <- prior_param$alpha
     eps_alpha <- 1
-  } else { alpha <- 1 }
+  } else { prior_param$alpha <- 1 }
 
-  if(!is.null(beta) ) {
-    beta_start <- beta
+  if(!is.null(prior_param$beta) ) {
+    beta_start <- prior_param$beta
     fixed_beta <- T ; 
     eps_beta <- 1
-  } else { beta <- 1 }
+  } else { prior_param$beta <- 1 }
   
   start <- Sys.time()
-  out <- sample_fSAN_cpp(nrep = nrep, burn = burn, y = y, group = group, 
-                         maxK = maxK, maxL = maxL, 
-                         m0 = m0, tau0 = tau0, lambda0 = lambda0, gamma0 = gamma0,
-                         alpha = alpha, beta = beta,
-                         mu_start = mu_start, sigma2_start = sigma2_start,
-                         M_start = M_start, S_start =  S_start, 
+  out <- sample_fSAN_cpp(nrep = model_param$nrep, 
+                         burn = model_param$burn, 
+                         y = y, group = group, 
+                         maxK = model_param$maxK, 
+                         maxL = model_param$maxL, 
+                         m0 = prior_param$m0, 
+                         tau0 = prior_param$tau0, 
+                         lambda0 = prior_param$lambda0, 
+                         gamma0 = prior_param$gamma0,
+                         alpha = prior_param$alpha, 
+                         beta =  prior_param$beta,
+                         mu_start = mu_start, 
+                         sigma2_start = sigma2_start,
+                         M_start = M_start, 
+                         S_start =  S_start, 
                          progressbar = progress)
   end <- Sys.time()
   

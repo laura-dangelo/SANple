@@ -4,23 +4,16 @@
 \alias{sample_fSAN}
 \title{Sample fSAN with sparse mixtures}
 \usage{
-sample_fSAN(nrep, burn, y, group, 
-               maxK = 50, maxL = 50, 
-               m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
-               alpha = NULL, beta = NULL,
-               warmstart = TRUE, nclus_start = NULL,
-               mu_start = NULL, sigma2_start = NULL, 
-               M_start = NULL, S_start = NULL,
-               progress = TRUE, seed = NULL)
+sample_fSAN(y, group, ...)
 }
 \arguments{
-\item{nrep}{Number of MCMC iterations.}
-
-\item{burn}{Number of discarded iterations.}
-
 \item{y}{Vector of observations.}
 
 \item{group}{Vector of the same length of y indicating the group membership (numeric).}
+
+\item{nrep}{Number of MCMC iterations.}
+
+\item{burn}{Number of discarded iterations.}
 
 \item{maxK}{Maximum number of distributional clusters \eqn{K} (default = 50).}
 
@@ -127,10 +120,7 @@ y <- c(rnorm(40,0,0.3), rnorm(20,5,0.3))
 g <- c(rep(1,30), rep(2, 30))
 plot(density(y[g==1]), xlim = c(-5,10))
 lines(density(y[g==2]), col = 2)
-out <- sample_fSAN(nrep = 500, burn = 200, y = y, group = g, 
-                             nclus_start = 2,
-                             maxK = 20, maxL = 20,
-                             alpha = 0.01, beta = 0.01)
+out <- sample_fSAN(y = y, group = g)
 out 
 
 }

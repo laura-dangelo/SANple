@@ -4,26 +4,16 @@
 \alias{sample_CAM}
 \title{Sample CAM}
 \usage{
-sample_CAM(nrep, burn, y, group, 
-           maxK = 50, maxL = 50, 
-           m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
-           hyp_alpha1 = 1, hyp_alpha2 = 1,
-           hyp_beta1 = 1, hyp_beta2 = 1,
-           alpha = NULL, beta = NULL,
-           warmstart = TRUE, nclus_start = NULL,
-           mu_start = NULL, sigma2_start = NULL,
-           M_start = NULL, S_start = NULL,
-           alpha_start = NULL, beta_start = NULL,
-           progress = TRUE, seed = NULL)
+sample_CAM(y, group, ...)
 }
 \arguments{
-\item{nrep}{Number of MCMC iterations.}
-
-\item{burn}{Number of discarded iterations.}
-
 \item{y}{Vector of observations.}
 
 \item{group}{Vector of the same length of y indicating the group membership (numeric).}
+
+\item{nrep}{Number of MCMC iterations.}
+
+\item{burn}{Number of discarded iterations.}
 
 \item{maxK}{Maximum number of distributional clusters (default = 50).}
 
@@ -145,9 +135,7 @@ y <- c(rnorm(40,0,0.3), rnorm(20,5,0.3))
 g <- c(rep(1,30), rep(2, 30))
 plot(density(y[g==1]), xlim = c(-5,10))
 lines(density(y[g==2]), col = 2)
-out <- sample_CAM(nrep = 500, burn = 200, y = y, group = g,
-                  nclus_start = 2,
-                  maxL = 20, maxK = 20)
+out <- sample_CAM(y = y, group = g)
 out 
 
 }
