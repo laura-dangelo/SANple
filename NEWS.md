@@ -1,8 +1,8 @@
-# SANple 0.2.1
+# SANple 0.2.0
 
-* Major update of function names (C++ level) to uinform with accepted paper
+* Major update of function names (C++ level) to uniform with accepted paper
 * Removed fCAM model and its hybrid version (random concentration parameters)
-
+* Replaced `arma::is_finite` with `std::isfinite` to ensure compatibility with the latest `RcppArmadillo` release and CRAN policies.
 
 # SANple 0.1.1
 

@@ -156,7 +156,7 @@ arma::vec slicedDP_sample_distr_cluster(const arma::vec& group,
     {
       for(unsigned int i = 0; i < ind_group_j.n_elem; i++) { mixdens(i) = log( omega(M_iter(ind_group_j(i)), k) ) ; }
       sumdens = arma::accu(mixdens) ;
-      if(!arma::is_finite(sumdens)) { sumdens = log(0) ;}
+      if(!std::isfinite(sumdens)) { sumdens = log(0) ;}
       probD(k) =  log( pi(k) ) - log( xi(k) ) + sumdens + log(u_D(j) < xi(k));
     }
     double tmp = max(probD) ;

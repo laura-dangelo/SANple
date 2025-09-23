@@ -1,4 +1,7 @@
-## SANple 0.1.1
+## SANple 0.2.0
+
+* Replaced `arma::is_finite` with `std::isfinite` to ensure compatibility with the latest `RcppArmadillo` release and CRAN policies.
+* Implemented small code adjustments to address and resolve compiler warnings.
 
 In this release we
 
