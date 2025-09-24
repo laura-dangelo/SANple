@@ -7,7 +7,7 @@
 sample_fSAN(nrep, burn, y, group, 
                maxK = 50, maxL = 50, 
                m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
-               alpha = NULL, beta = NULL,
+               alpha = 0.01, beta = 0.01,
                warmstart = TRUE, nclus_start = NULL,
                mu_start = NULL, sigma2_start = NULL, 
                M_start = NULL, S_start = NULL,
@@ -28,9 +28,9 @@ sample_fSAN(nrep, burn, y, group,
 
 \item{m0, tau0, lambda0, gamma0}{Hyperparameters on \eqn{(\mu, \sigma^2) \sim NIG(m_0, \tau_0, \lambda_0,\gamma_0)}. Default is (0, 0.1, 3, 2).}
 
-\item{alpha}{Distributional Dirichlet parameter if fixed (optional). The distribution is Dirichlet( \code{rep(alpha, maxK)} ).}
+\item{alpha}{Distributional Dirichlet parameter (default alpha = 0.01). The distribution is Dirichlet( \code{rep(alpha, maxK)} ).}
 
-\item{beta}{Observational Dirichlet parameter if fixed (optional). The distribution is Dirichlet( \code{rep(beta, maxL)} ).}
+\item{beta}{Observational Dirichlet parameter (default beta = 0.01). The distribution is Dirichlet( \code{rep(beta, maxL)} ).}
 
 \item{warmstart, nclus_start}{Initialization of the observational clustering. 
 \code{warmstart} is logical parameter (default = \code{TRUE}) of whether a kmeans clustering should be used to initialize the chains.

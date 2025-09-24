@@ -10,7 +10,7 @@
 #'               maxK = 50, maxL = 50, 
 #'               m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
 #'               hyp_alpha1 = 1, hyp_alpha2 = 1,
-#'               alpha = NULL, beta = NULL,
+#'               alpha = NULL, beta = 0.01,
 #'               warmstart = TRUE, nclus_start = NULL,
 #'               mu_start = NULL, sigma2_start = NULL,
 #'               M_start = NULL, S_start = NULL,
@@ -28,7 +28,7 @@
 #' @param hyp_alpha1,hyp_alpha2 If a random \eqn{\alpha} is used, (\code{hyp_alpha1},\code{hyp_alpha2}) specify the hyperparameters (default = (1,1)).
 #' The prior is \eqn{\alpha} ~ Gamma(\code{hyp_alpha1}, \code{hyp_alpha2}).
 #' @param alpha Distributional DP parameter if fixed (optional). The distribution is \eqn{\pi\sim GEM (\alpha)}.
-#' @param beta Observational Dirichlet parameter if fixed (optional). The distribution is Dirichlet( \code{rep(beta, maxL)} ). Notice that beta should be small to ensure sparsity (e.g. beta = 0.01)
+#' @param beta Observational Dirichlet parameter. The distribution is Dirichlet( \code{rep(beta, maxL)} ). Notice that beta should be small to ensure sparsity: default is beta = 0.01.
 #' @param warmstart,nclus_start Initialization of the observational clustering. 
 #' \code{warmstart} is logical parameter (default = \code{TRUE}) of whether a kmeans clustering should be used to initialize the chains.
 #' An initial guess of the number of observational clusters can be passed via the \code{nclus_start} parameter (optional)
@@ -144,7 +144,7 @@ sample_fiSAN <- function(nrep, burn, y, group,
                                    maxK = 50, maxL = 50, 
                                    m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
                                    hyp_alpha1 = 1, hyp_alpha2 = 1,
-                                   alpha = NULL, beta = NULL,
+                                   alpha = NULL, beta = 0.01,
                                    warmstart = TRUE, nclus_start = NULL,
                                    mu_start = NULL, sigma2_start = NULL,
                                    M_start = NULL, S_start = NULL,

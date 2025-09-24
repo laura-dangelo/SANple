@@ -8,7 +8,7 @@
 #' sample_fSAN(nrep, burn, y, group, 
 #'                maxK = 50, maxL = 50, 
 #'                m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
-#'                alpha = NULL, beta = NULL,
+#'                alpha = 0.01, beta = 0.01,
 #'                warmstart = TRUE, nclus_start = NULL,
 #'                mu_start = NULL, sigma2_start = NULL, 
 #'                M_start = NULL, S_start = NULL,
@@ -22,8 +22,8 @@
 #' @param maxK Maximum number of distributional clusters \eqn{K} (default = 50).
 #' @param maxL Maximum number of observational clusters \eqn{L} (default = 50).
 #' @param m0,tau0,lambda0,gamma0 Hyperparameters on \eqn{(\mu, \sigma^2) \sim NIG(m_0, \tau_0, \lambda_0,\gamma_0)}. Default is (0, 0.1, 3, 2).
-#' @param alpha Distributional Dirichlet parameter if fixed (optional). The distribution is Dirichlet( \code{rep(alpha, maxK)} ).
-#' @param beta Observational Dirichlet parameter if fixed (optional). The distribution is Dirichlet( \code{rep(beta, maxL)} ).
+#' @param alpha Distributional Dirichlet parameter (default alpha = 0.01). The distribution is Dirichlet( \code{rep(alpha, maxK)} ).
+#' @param beta Observational Dirichlet parameter (default beta = 0.01). The distribution is Dirichlet( \code{rep(beta, maxL)} ).
 #' @param warmstart,nclus_start Initialization of the observational clustering. 
 #' \code{warmstart} is logical parameter (default = \code{TRUE}) of whether a kmeans clustering should be used to initialize the chains.
 #' An initial guess of the number of observational clusters can be passed via the \code{nclus_start} parameter (optional)
@@ -131,7 +131,7 @@
 sample_fSAN <- function(nrep, burn, y, group, 
                         maxK = 50, maxL = 50, 
                         m0 = 0, tau0 = 0.1, lambda0 = 3, gamma0 = 2,
-                        alpha = NULL, beta = NULL,
+                        alpha = 0.01, beta = 0.01,
                         warmstart = TRUE, nclus_start = NULL,
                         mu_start = NULL, sigma2_start = NULL, 
                         M_start = NULL, S_start = NULL,

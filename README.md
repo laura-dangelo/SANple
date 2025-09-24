@@ -54,7 +54,7 @@ lines(density(y[g==2]), col = "cyan4")
 <img src="man/figures/README-example-1.png" width="100%" />
 
 ``` r
-out <- sample_fiSAN(nrep = 3000, burn = 1000, y = y, group = g, beta = 1)
+out <- sample_fiSAN(nrep = 3000, burn = 1000, y = y, group = g, beta = 0.01)
 out 
 #> 
 #> MCMC result of fiSAN model 
@@ -62,10 +62,10 @@ out
 #> Model estimated on 290 total observations and 2 groups 
 #> Total MCMC iterations: 3000 
 #> maxL: 50 - maxK: 50 
-#> Elapsed time: 1.453 secs
+#> Elapsed time: 3.374 secs 
+#> 
 clusters <- estimate_clusters(out)
 clusters
-#> 
 #> Summary of the estimated observational and distributional clusters 
 #> 
 #> ----------------------------------
@@ -82,6 +82,7 @@ clusters
 #>     post_mean  post_var
 #> 3 -0.00160923 0.7737203
 #> 4  5.03452815 0.8314760
+#> 
 plot(out, estimated_clusters = clusters)
 ```
 
