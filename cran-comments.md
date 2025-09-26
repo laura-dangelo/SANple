@@ -1,10 +1,9 @@
 ## SANple 0.2.0
 
-* Replaced `arma::is_finite` with `std::isfinite` to ensure compatibility with the latest `RcppArmadillo` release and CRAN policies.
-* Implemented small code adjustments to address and resolve compiler warnings.
-
 In this release we
 
+* Replaced `arma::is_finite` with `std::isfinite` to ensure compatibility with the latest `RcppArmadillo` release and CRAN policies.
+* Implemented small code adjustments to address and resolve compiler warnings.
 * Updated the MCMC functions to take a `burn in` value as input;
 * Some algorithms ran `nrep-1` iterations. Updated to `nrep`;
 * Improved efficiency of stick-breaking computation;
